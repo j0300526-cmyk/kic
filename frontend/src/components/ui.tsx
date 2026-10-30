@@ -33,7 +33,7 @@ export function DataBadge({ mode, online = true }: { mode: 'mock' | 'llm'; onlin
       mode === 'mock' ? 'border-amber/25 bg-amber/10 text-amber' : 'border-mint/25 bg-mint/10 text-mint'
     }`}>
       <span className={`h-1.5 w-1.5 rounded-full ${online ? 'bg-current' : 'bg-slate-500'}`} />
-      {mode === 'mock' ? 'Mock data' : 'Live LLM'}
+      {mode === 'mock' ? '모의 데이터' : '실시간 LLM'}
     </span>
   )
 }

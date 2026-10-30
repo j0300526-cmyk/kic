@@ -31,7 +31,7 @@ def test_enabled_weights_normalize_and_disabled_weights_are_zero() -> None:
 
 
 def test_all_zero_enabled_weights_fail() -> None:
-    with pytest.raises(AlphaMixError, match="positive weight") as exc_info:
+    with pytest.raises(AlphaMixError, match="0보다 큰 가중치") as exc_info:
         normalize_agent_weights(dict.fromkeys(AGENT_IDS, 0), list(AGENT_IDS))
     assert exc_info.value.code == "ZERO_AGENT_WEIGHT"
 
@@ -88,7 +88,7 @@ def test_risk_agent_zero_does_not_remove_mandatory_constraints(analysis_run) -> 
     assert result.portfolio_weights["us_equity"] <= 0.35 + 2e-5
     assert result.portfolio_weights["cash"] >= 0.10 - 2e-5
     assert result.volatility <= 0.09 + 2e-5
-    assert any("mandatory" in warning.lower() for warning in result.warnings)
+    assert any("필수" in warning for warning in result.warnings)
 
 
 def test_infeasible_caps_return_stable_error(analysis_run) -> None:

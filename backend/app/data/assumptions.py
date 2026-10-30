@@ -9,10 +9,10 @@ DATA_AS_OF = datetime(2026, 10, 31, tzinfo=UTC)
 MODEL_VERSION = "tpa-v1"
 
 ASSET_NAMES: dict[AssetId, str] = {
-    "us_equity": "US Equity",
-    "us_treasury": "US Treasury",
-    "gold": "Gold",
-    "cash": "Cash",
+    "us_equity": "미국 주식",
+    "us_treasury": "미국 국채",
+    "gold": "금",
+    "cash": "현금",
 }
 
 BASE_EXPECTED_RETURNS: dict[AssetId, float] = {
@@ -63,15 +63,15 @@ RISK_PROFILES = {
 
 PRESETS: dict[str, dict[str, object]] = {
     "balanced": {
-        "name": "Balanced",
-        "description": "Evenly blends the six institutional lenses.",
+        "name": "기본 균형",
+        "description": "여섯 가지 기관투자 관점을 고르게 반영합니다.",
         "weights": dict.fromkeys(AGENT_IDS, 100 / len(AGENT_IDS)),
         "enabled_agents": list(AGENT_IDS),
         "risk_tolerance": "balanced",
     },
     "defensive": {
-        "name": "Risk Defense",
-        "description": "Emphasizes risk, liquidity and geopolitical resilience.",
+        "name": "위험 방어",
+        "description": "위험, 유동성, 지정학적 회복탄력성을 우선합니다.",
         "weights": {
             "macro": 10,
             "valuation": 5,
@@ -84,8 +84,8 @@ PRESETS: dict[str, dict[str, object]] = {
         "risk_tolerance": "conservative",
     },
     "value": {
-        "name": "Value Investing",
-        "description": "Prioritizes valuation and macro regime signals.",
+        "name": "가치 투자",
+        "description": "가치평가와 거시경제 국면 신호를 우선합니다.",
         "weights": {
             "macro": 25,
             "valuation": 45,

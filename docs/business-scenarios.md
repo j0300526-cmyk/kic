@@ -1,69 +1,56 @@
-# AlphaMix Business Scenarios
+# AlphaMix 비즈니스 시나리오
 
-All numbers in the MVP are illustrative mock assumptions. They are designed to
-demonstrate decision mechanics, not to describe current markets or recommend an
-investment.
+MVP의 모든 수치는 설명을 위한 모의 가정입니다. 현재 시장을 설명하거나
+투자를 권유하기 위한 것이 아니라 의사결정 구조를 시연하기 위한 것입니다.
 
-## Personas
+## 사용자 유형
 
-- **CIO / investment committee:** compares policy-level mixes and reads the
-  reasons behind allocation changes.
-- **Portfolio strategist:** changes agent influence, risk tolerance, and caps,
-  then saves scenarios for discussion.
-- **Risk reviewer:** confirms mandatory constraints remain active independently
-  of subjective agent influence.
+- **CIO / 투자위원회:** 정책 수준의 믹스를 비교하고 자산배분 변화의 근거를 확인합니다.
+- **포트폴리오 전략가:** Agent 영향력, 위험 허용도, 상한을 변경하고 논의를 위해 시나리오를 저장합니다.
+- **위험 검토자:** 주관적 Agent 영향력과 별개로 필수 제약이 유지되는지 확인합니다.
 
-## Preset hypotheses
+## 프리셋 가설
 
-### Balanced
+### 기본 균형
 
-Uses broadly even specialist influence. This is the baseline for before/after
-comparison and should produce a diversified feasible allocation.
+전문 Agent의 영향력을 대체로 고르게 적용합니다. 변경 전후 비교의 기준이며
+분산된 실행 가능 포트폴리오를 생성해야 합니다.
 
-### Risk defense
+### 위험 방어
 
-Raises Risk, Liquidity, Macro, and Geopolitical influence. The expected behavior
-is lower risk-asset attractiveness, higher defensive allocation, and compliance
-with the same mandatory portfolio limits.
+위험관리, 유동성, 거시경제, 지정학 영향력을 높입니다. 위험자산 매력도는
+낮아지고 방어자산 비중은 높아지며 동일한 필수 한도를 준수해야 합니다.
 
-### Value investing
+### 가치 투자
 
-Raises Valuation influence and keeps Risk as a secondary input. The expected
-behavior is a material change in adjusted return estimates and allocation when
-valuation signals differ across assets.
+가치평가 영향력을 높이고 위험관리를 보조 입력으로 유지합니다. 자산별
+가치평가 신호가 다를 때 조정 기대수익률과 배분이 의미 있게 달라져야 합니다.
 
-## Demonstration flow
+## 시연 흐름
 
-1. Open Overview and confirm that the data badge says `MOCK`.
-2. Inspect all six analyses and their sources, as-of date, confidence, and
-   limitations.
-3. Open Mixing Console and select Balanced.
-4. Move the Valuation fader up and Flow down; confirm normalized weights remain
-   100% and the allocation preview changes.
-5. Disable Risk Agent; confirm that portfolio caps and risk constraints still
-   pass.
-6. Set every enabled fader to zero; confirm that optimization stops with an
-   explanatory error.
-7. Load Risk defense, save it as a scenario, and compare it with Balanced.
-8. Open Report and review the agent evidence, critic notes, allocation, and
-   limitations in one place.
+1. 종합 현황에서 데이터 배지가 `모의 데이터`인지 확인합니다.
+2. 여섯 분석의 출처, 기준일, 신뢰도, 한계를 확인합니다.
+3. 믹싱 콘솔에서 기본 균형을 선택합니다.
+4. 가치평가 페이더를 높이고 수급을 낮춘 뒤 정규화 합계 100%와 배분 변화를 확인합니다.
+5. 위험관리 Agent를 비활성화해도 포트폴리오 상한과 위험 제약이 유지되는지 확인합니다.
+6. 모든 활성 페이더를 0으로 설정하고 설명 오류와 함께 최적화가 중단되는지 확인합니다.
+7. 위험 방어를 불러와 시나리오로 저장하고 기본 균형과 비교합니다.
+8. 보고서에서 Agent 근거, Critic 의견, 자산배분, 한계를 함께 검토합니다.
 
-## Financial validation rules
+## 금융 검증 규칙
 
-- Portfolio weights must be long-only and sum to 1 within `1e-5`.
-- Each asset must satisfy its mandatory maximum weight.
-- Cash must meet the configured minimum.
-- The liquidity budget must pass even when Liquidity Agent influence is zero.
-- The risk budget must pass even when Risk Agent influence is zero.
-- Expected return adjustments must be bounded and traceable to mixed scores.
-- A scenario is comparable only if its model and data versions are displayed.
+- 포트폴리오 비중은 매수 전용이며 `1e-5` 허용오차 안에서 합계가 1이어야 합니다.
+- 각 자산은 필수 최대 비중을 준수해야 합니다.
+- 현금은 설정된 최소 비중을 충족해야 합니다.
+- 유동성 Agent 영향력이 0이어도 유동성 예산을 통과해야 합니다.
+- 위험관리 Agent 영향력이 0이어도 위험 예산을 통과해야 합니다.
+- 기대수익률 조정은 범위가 제한되고 통합 점수로 추적할 수 있어야 합니다.
+- 모델과 데이터 버전이 표시된 시나리오만 비교할 수 있습니다.
 
-## Known MVP limitations
+## 알려진 MVP 한계
 
-- No live market feed, liability model, FX hedging, transaction cost, tax, or
-  trading integration.
-- The four-asset covariance and returns are illustrative.
-- Agent rationales in mock mode are curated demonstration content.
-- The LLM path is optional and must not be treated as verified evidence merely
-  because a model produced it.
+- 실시간 시장 데이터, 부채 모델, 환헤지, 거래비용, 세금, 매매 연동은 포함하지 않습니다.
+- 네 자산의 공분산과 수익률은 설명을 위한 값입니다.
+- Mock 모드의 Agent 근거는 시연을 위해 구성한 내용입니다.
+- LLM 경로는 선택 사항이며 모델이 생성했다는 이유만으로 검증된 근거로 취급해서는 안 됩니다.
 

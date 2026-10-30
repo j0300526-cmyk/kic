@@ -14,12 +14,12 @@ import type { ViewId } from '../types'
 import { DataBadge } from './ui'
 
 const navigation: Array<{ id: ViewId; label: string; sub: string; icon: typeof CircleGauge }> = [
-  { id: 'overview', label: 'Overview', sub: '통합 현황', icon: CircleGauge },
-  { id: 'agents', label: 'Agent Analysis', sub: '전문가 분석', icon: Bot },
-  { id: 'mixing', label: 'Mixing Console', sub: '영향력 조정', icon: SlidersVertical },
-  { id: 'optimization', label: 'Optimization', sub: 'TPA 최적화', icon: BarChart3 },
-  { id: 'scenarios', label: 'Scenarios', sub: '설정 비교', icon: GitCompareArrows },
-  { id: 'report', label: 'Report', sub: '의사결정 보고서', icon: FileText },
+  { id: 'overview', label: '종합 현황', sub: '시장·포트폴리오', icon: CircleGauge },
+  { id: 'agents', label: 'Agent 분석', sub: '전문가별 근거', icon: Bot },
+  { id: 'mixing', label: '믹싱 콘솔', sub: '영향력 조정', icon: SlidersVertical },
+  { id: 'optimization', label: '포트폴리오 최적화', sub: 'TPA 최적화', icon: BarChart3 },
+  { id: 'scenarios', label: '시나리오 비교', sub: '설정 비교', icon: GitCompareArrows },
+  { id: 'report', label: '의사결정 보고서', sub: '근거와 한계', icon: FileText },
 ]
 
 interface ShellProps extends PropsWithChildren {
@@ -41,7 +41,7 @@ export function Shell({ view, onViewChange, serverOnline, busy, children }: Shel
         </div>
         <div>
           <p className="text-lg font-semibold tracking-[-.03em] text-white">AlphaMix</p>
-          <p className="text-[9px] font-bold uppercase tracking-[.2em] text-slate-500">TPA Decision OS</p>
+          <p className="text-[9px] font-bold uppercase tracking-[.2em] text-slate-500">TPA 의사결정 운영체계</p>
         </div>
       </div>
       <nav className="flex-1 space-y-1 p-3" aria-label="주요 화면">
@@ -68,13 +68,13 @@ export function Shell({ view, onViewChange, serverOnline, busy, children }: Shel
         })}
       </nav>
       <div className="m-4 rounded-xl border border-line bg-ink/60 p-3.5">
-        <p className="text-[10px] font-bold uppercase tracking-widest text-slate-600">System</p>
+        <p className="text-[10px] font-bold uppercase tracking-widest text-slate-600">시스템</p>
         <div className="mt-3 flex items-center justify-between text-xs">
           <span className="text-slate-400">FastAPI</span>
-          <span className={serverOnline ? 'text-mint' : 'text-amber'}>{serverOnline ? 'Connected' : 'Preview'}</span>
+          <span className={serverOnline ? 'text-mint' : 'text-amber'}>{serverOnline ? '연결됨' : '미리보기'}</span>
         </div>
         <div className="mt-2 flex items-center justify-between text-xs">
-          <span className="text-slate-400">Engine</span>
+          <span className="text-slate-400">최적화 엔진</span>
           <span className="text-slate-300">TPA v1</span>
         </div>
       </div>
@@ -97,16 +97,16 @@ export function Shell({ view, onViewChange, serverOnline, busy, children }: Shel
           <div className="flex items-center gap-3">
             <button aria-label="메뉴 열기" className="grid h-9 w-9 place-items-center rounded-lg border border-line text-slate-300 lg:hidden" onClick={() => setMobileOpen(true)}><Menu size={18} /></button>
             <div>
-              <p className="text-[10px] font-bold uppercase tracking-[.18em] text-slate-600">Portfolio workspace</p>
+              <p className="text-[10px] font-bold uppercase tracking-[.18em] text-slate-600">포트폴리오 작업공간</p>
               <h1 className="text-lg font-semibold text-white">{current.label}</h1>
             </div>
           </div>
           <div className="flex items-center gap-2 sm:gap-4">
-            {busy && <span className="hidden items-center gap-2 text-xs text-cyan sm:flex"><span className="h-1.5 w-1.5 animate-pulse rounded-full bg-cyan" />Re-optimizing</span>}
+            {busy && <span className="hidden items-center gap-2 text-xs text-cyan sm:flex"><span className="h-1.5 w-1.5 animate-pulse rounded-full bg-cyan" />재최적화 중</span>}
             <DataBadge mode="mock" online={serverOnline} />
             <div className="hidden border-l border-line pl-4 text-right sm:block">
-              <p className="text-xs font-medium text-white">KIC Competition</p>
-              <p className="text-[10px] text-slate-600">2026.10.31 AS OF</p>
+              <p className="text-xs font-medium text-white">KIC AI Agent 공모전</p>
+              <p className="text-[10px] text-slate-600">기준일 2026.10.31</p>
             </div>
           </div>
         </header>

@@ -65,8 +65,8 @@ def repair_flagged_analyses(
         if not item.sources or any(source.as_of > item.as_of.date() for source in item.sources):
             updates["sources"] = [
                 SourceReference(
-                    title="Critic-required source disclosure",
-                    publisher="AlphaMix validation fallback",
+                    title="Critic 보완 출처 공개",
+                    publisher="AlphaMix 검증 대체 데이터",
                     url=None,
                     as_of=item.as_of.date() if item.as_of else date(2026, 10, 31),
                 )

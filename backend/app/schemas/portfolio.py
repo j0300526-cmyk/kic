@@ -24,9 +24,9 @@ class PortfolioConstraints(StrictModel):
     @classmethod
     def validate_caps(cls, caps: dict[AssetId, float]) -> dict[AssetId, float]:
         if not caps:
-            raise ValueError("max_weights cannot be empty")
+            raise ValueError("max_weights는 비어 있을 수 없습니다")
         if any(value < 0 or value > 1 for value in caps.values()):
-            raise ValueError("asset caps must be between 0 and 1")
+            raise ValueError("자산별 최대 비중은 0에서 1 사이여야 합니다")
         return caps
 
 
@@ -41,16 +41,16 @@ class OptimizationRequest(StrictModel):
     @classmethod
     def validate_agent_weights(cls, weights: dict[AgentId, float]) -> dict[AgentId, float]:
         if any(weight < 0 or weight > 100 for weight in weights.values()):
-            raise ValueError("fader weights must be between 0 and 100")
+            raise ValueError("페이더 가중치는 0에서 100 사이여야 합니다")
         return weights
 
     @model_validator(mode="after")
     def validate_agents(self) -> "OptimizationRequest":
         if len(self.enabled_agents) != len(set(self.enabled_agents)):
-            raise ValueError("enabled_agents cannot contain duplicates")
+            raise ValueError("enabled_agents에는 중복 Agent가 포함될 수 없습니다")
         unknown_enabled = set(self.enabled_agents).difference(AGENT_IDS)
         if unknown_enabled:
-            raise ValueError(f"unsupported agents: {sorted(unknown_enabled)}")
+            raise ValueError(f"지원하지 않는 Agent입니다: {sorted(unknown_enabled)}")
         return self
 
 

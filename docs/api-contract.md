@@ -1,18 +1,18 @@
-# AlphaMix API Contract
+# AlphaMix API 계약
 
-Base path: `/api/v1`
+기본 경로: `/api/v1`
 
-All timestamps are ISO 8601 UTC. All portfolio and agent weights are decimal
-fractions in API responses; fader inputs are integers or floats from 0 to 100.
+모든 시간은 ISO 8601 UTC 형식입니다. API 응답의 포트폴리오·Agent 가중치는
+소수이며, 페이더 입력은 0에서 100 사이의 정수 또는 실수입니다.
 
-## 1. Shared types
+## 1. 공용 타입
 
-### Asset
+### 자산
 
 ```json
 {
   "id": "us_equity",
-  "name": "US Equity"
+  "name": "미국 주식"
 }
 ```
 
@@ -20,8 +20,8 @@ fractions in API responses; fader inputs are integers or floats from 0 to 100.
 
 ```json
 {
-  "title": "Mock US macro dataset",
-  "publisher": "AlphaMix sample data",
+  "title": "미국 거시경제 모의 데이터셋",
+  "publisher": "AlphaMix 샘플 데이터",
   "url": null,
   "as_of": "2026-10-31"
 }
@@ -32,7 +32,7 @@ fractions in API responses; fader inputs are integers or floats from 0 to 100.
 ```json
 {
   "agent_id": "macro",
-  "agent_name": "Macro Agent",
+  "agent_name": "거시경제 Agent",
   "mode": "mock",
   "assets": ["us_equity", "us_treasury", "gold", "cash"],
   "scores": {
@@ -44,13 +44,13 @@ fractions in API responses; fader inputs are integers or floats from 0 to 100.
   "sources": [],
   "rationale": "...",
   "confidence": 0.78,
-  "uncertainties": ["Mock data is not live market data."],
+  "uncertainties": ["모의 데이터는 실시간 시장 데이터가 아닙니다."],
   "as_of": "2026-10-31T00:00:00Z"
 }
 ```
 
-Rules: score `[-1, 1]`, confidence `[0, 1]`, non-empty rationale, at least one
-uncertainty, and all four assets present.
+규칙: 점수 `[-1, 1]`, 신뢰도 `[0, 1]`, 비어 있지 않은 분석 근거, 하나 이상의
+불확실성, 네 자산 전체가 포함되어야 합니다.
 
 ### CriticResult
 
@@ -63,11 +63,11 @@ uncertainty, and all four assets present.
 }
 ```
 
-## 2. Analysis
+## 2. 분석
 
 ### `GET /analysis/latest?mode=mock`
 
-Returns a reproducible analysis run:
+재현 가능한 분석 실행 결과를 반환합니다.
 
 ```json
 {
@@ -80,14 +80,14 @@ Returns a reproducible analysis run:
 }
 ```
 
-`mode=llm` uses the configured model adapter. If it is not configured, the API
-returns `MODEL_NOT_CONFIGURED`; the frontend may explicitly retry in mock mode.
+`mode=llm`은 설정된 모델 어댑터를 사용합니다. 설정이 없으면 API가
+`MODEL_NOT_CONFIGURED`를 반환하며 프론트엔드는 Mock 모드로 다시 요청할 수 있습니다.
 
-## 3. Optimization
+## 3. 최적화
 
 ### `POST /portfolio/optimize`
 
-Request:
+요청:
 
 ```json
 {
@@ -115,10 +115,10 @@ Request:
 }
 ```
 
-The server ignores disabled-agent raw values, validates that the enabled sum is
-positive, and normalizes it to 1.0.
+서버는 비활성 Agent의 원시값을 무시하고 활성 가중치 합계가 0보다 큰지 검증한
+뒤 1.0으로 정규화합니다.
 
-Response:
+응답:
 
 ```json
 {
@@ -147,57 +147,57 @@ Response:
 
 ### `GET /portfolio/assumptions`
 
-Returns asset labels, base returns, volatility, covariance, score sensitivities,
-and default mandatory constraints used by the sample model.
+샘플 모델이 사용하는 자산명, 기준 수익률, 변동성, 공분산, 점수 민감도,
+기본 필수 제약을 반환합니다.
 
-## 4. Presets and scenarios
+## 4. 프리셋과 시나리오
 
 ### `GET /presets`
 
-Returns `balanced`, `defensive`, and `value` preset definitions.
+`balanced`, `defensive`, `value` 프리셋 정의를 반환합니다.
 
 ### `GET /scenarios`
 
-Lists saved scenario summaries.
+저장된 시나리오 요약 목록을 반환합니다.
 
 ### `POST /scenarios`
 
-Persists a name, raw faders, enabled agents, normalized weights, request
-constraints, and the current optimization snapshot.
+이름, 원시 페이더, 활성 Agent, 정규화 가중치, 요청 제약, 현재 최적화
+스냅샷을 저장합니다.
 
 ### `GET /scenarios/{scenario_id}`
 
-Returns one saved scenario.
+저장된 시나리오 하나를 반환합니다.
 
 ### `DELETE /scenarios/{scenario_id}`
 
-Deletes one scenario and returns HTTP 204.
+시나리오 하나를 삭제하고 HTTP 204를 반환합니다.
 
-## 5. Overview and reports
+## 5. 종합 현황과 보고서
 
 ### `GET /overview`
 
-Returns a compact mock market snapshot and the latest baseline allocation.
+간단한 모의 시장 스냅샷과 최신 기준 자산배분을 반환합니다.
 
 ### `POST /reports`
 
-Accepts a scenario/optimization snapshot and returns a structured report with
-executive summary, agent evidence, critic warnings, portfolio rationale, and
-limitations. The MVP renders this report in the web UI.
+시나리오·최적화 스냅샷을 받아 핵심 요약, Agent 근거, Critic 경고,
+포트폴리오 판단 근거, 한계를 포함한 구조화 보고서를 반환합니다. MVP는 이를
+웹 화면에 표시합니다.
 
-## 6. Error envelope
+## 6. 오류 형식
 
 ```json
 {
   "error": {
     "code": "ZERO_AGENT_WEIGHT",
-    "message": "At least one enabled agent must have a positive weight.",
-    "details": {"agent_weights": "sum must be greater than zero"}
+    "message": "활성 Agent 중 하나 이상에 0보다 큰 가중치를 설정해야 합니다.",
+    "details": {"agent_weights": "가중치 합계는 0보다 커야 합니다"}
   }
 }
 ```
 
-Important codes: `VALIDATION_ERROR`, `ZERO_AGENT_WEIGHT`,
-`ANALYSIS_NOT_FOUND`, `MODEL_NOT_CONFIGURED`, `OPTIMIZATION_INFEASIBLE`, and
-`SCENARIO_NOT_FOUND`.
+주요 오류 코드는 `VALIDATION_ERROR`, `ZERO_AGENT_WEIGHT`,
+`ANALYSIS_NOT_FOUND`, `MODEL_NOT_CONFIGURED`, `OPTIMIZATION_INFEASIBLE`,
+`SCENARIO_NOT_FOUND`입니다.
 

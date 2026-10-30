@@ -18,8 +18,8 @@ export function MixConsole({ controls, preset, onPreset, onWeight, onToggle, onR
   return (
     <Panel className="overflow-hidden">
       <SectionTitle
-        eyebrow="Signal routing"
-        title="Agent Mixing Console"
+        eyebrow="분석 신호 배분"
+        title="Agent 믹싱 콘솔"
         action={
           <button className="btn-secondary" onClick={onReset}><RotateCcw size={14} /> 초기화</button>
         }
@@ -67,7 +67,7 @@ export function MixConsole({ controls, preset, onPreset, onWeight, onToggle, onR
               </div>
               <div className="rounded-lg border border-line bg-[#07111f] px-2 py-2">
                 <p className="font-mono text-base font-semibold text-white">{control.rawWeight.toFixed(0)}</p>
-                <p className="text-[9px] uppercase tracking-wider text-slate-600">raw · {percent.toFixed(1)}%</p>
+                <p className="text-[9px] uppercase tracking-wider text-slate-600">원시값 · 반영 {percent.toFixed(1)}%</p>
               </div>
               <button
                 aria-label={`${control.name} ${control.enabled ? '비활성화' : '활성화'}`}
@@ -75,7 +75,7 @@ export function MixConsole({ controls, preset, onPreset, onWeight, onToggle, onR
                 className={`mt-3 inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-[10px] font-medium ${control.enabled ? 'bg-mint/10 text-mint' : 'bg-slate-800 text-slate-500'}`}
                 onClick={() => onToggle(control.id)}
               >
-                <Power size={10} /> {control.enabled ? 'ACTIVE' : 'MUTED'}
+                <Power size={10} /> {control.enabled ? '활성' : '비활성'}
               </button>
             </div>
           )
@@ -83,7 +83,7 @@ export function MixConsole({ controls, preset, onPreset, onWeight, onToggle, onR
       </div>
       <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-line pt-4 text-xs">
         <span className="text-slate-500">활성 Agent 자동 정규화</span>
-        <span className={`font-mono font-semibold ${normalized ? 'text-mint' : 'text-red-300'}`}>TOTAL {normalized ? '100.0%' : '0.0%'}</span>
+        <span className={`font-mono font-semibold ${normalized ? 'text-mint' : 'text-red-300'}`}>합계 {normalized ? '100.0%' : '0.0%'}</span>
       </div>
     </Panel>
   )

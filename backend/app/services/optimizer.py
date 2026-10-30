@@ -39,7 +39,7 @@ def optimize_portfolio(
     if request.analysis_run_id != analysis_run.analysis_run_id:
         raise AlphaMixError(
             "ANALYSIS_NOT_FOUND",
-            "The requested analysis run was not found.",
+            "요청한 분석 실행 결과를 찾을 수 없습니다.",
             status_code=404,
             details={"analysis_run_id": request.analysis_run_id},
         )
@@ -59,14 +59,14 @@ def optimize_portfolio(
     if sum(caps.values()) < 1 - NUMERICAL_TOLERANCE:
         raise AlphaMixError(
             "OPTIMIZATION_INFEASIBLE",
-            "Asset caps cannot support a fully invested portfolio.",
+            "자산별 최대 비중으로는 완전 투자 포트폴리오를 구성할 수 없습니다.",
             status_code=422,
             details={"max_weight_sum": sum(caps.values())},
         )
     if request.constraints.min_cash > caps["cash"]:
         raise AlphaMixError(
             "OPTIMIZATION_INFEASIBLE",
-            "The minimum cash allocation exceeds the cash cap.",
+            "최소 현금 비중이 현금 최대 비중을 초과합니다.",
             status_code=422,
             details={"min_cash": request.constraints.min_cash, "cash_cap": caps["cash"]},
         )
@@ -104,7 +104,7 @@ def optimize_portfolio(
     if problem.status not in {cp.OPTIMAL, cp.OPTIMAL_INACCURATE} or weights.value is None:
         raise AlphaMixError(
             "OPTIMIZATION_INFEASIBLE",
-            "No portfolio satisfies the mandatory investment and risk constraints.",
+            "필수 투자 및 위험 제약을 모두 충족하는 포트폴리오가 없습니다.",
             status_code=422,
             details={"solver_status": problem.status, "solver_errors": solve_errors},
         )
@@ -114,7 +114,7 @@ def optimize_portfolio(
     if np.any(solved < -NUMERICAL_TOLERANCE):
         raise AlphaMixError(
             "OPTIMIZATION_INFEASIBLE",
-            "Solver returned a portfolio outside the long-only constraint.",
+            "최적화 결과가 매수 전용 제약을 벗어났습니다.",
             status_code=422,
         )
     solved = np.maximum(solved, 0)
@@ -144,7 +144,7 @@ def optimize_portfolio(
     warnings = list(analysis_run.warnings)
     if normalized.get("risk", 0.0) == 0:
         warnings.append(
-            "Risk Agent influence is zero; mandatory portfolio risk constraints remain active."
+            "위험관리 Agent 영향력은 0이지만 필수 포트폴리오 위험 제약은 계속 적용됩니다."
         )
 
     return OptimizationResponse(
@@ -193,7 +193,7 @@ def _verify_solution(
     if violations:
         raise AlphaMixError(
             "OPTIMIZATION_INFEASIBLE",
-            "The solver result failed mandatory post-solve validation.",
+            "최적화 결과가 필수 사후 검증을 통과하지 못했습니다.",
             status_code=422,
             details=violations,
         )

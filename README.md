@@ -1,20 +1,17 @@
 # AlphaMix
 
-**Multi-Agent TPA Portfolio Decision Platform** for the KIC AI Agent
-competition.
+KIC AI Agent 공모전을 위한 **멀티 Agent TPA 포트폴리오 의사결정 플랫폼**입니다.
 
-AlphaMix combines six specialist market views through an audio-console-style
-mixing interface and feeds the normalized signal into a constrained Total
-Portfolio Approach optimizer. The first MVP supports US equities, US
-Treasuries, gold, and cash. It runs deterministically with mock data and no API
-key.
+AlphaMix는 여섯 전문 Agent의 시장 관점을 오디오 믹싱 콘솔처럼 조합하고,
+정규화된 신호를 제약 조건이 적용된 TPA(Total Portfolio Approach) 최적화
+엔진에 전달합니다. MVP는 미국 주식, 미국 국채, 금, 현금을 지원하며 API 키
+없이 재현 가능한 모의 데이터로 실행할 수 있습니다.
 
-## Quick start
+## 빠른 시작
 
-The default configuration uses deterministic mock agents and does not require
-an API key.
+기본 설정은 결정론적 Mock Agent를 사용하므로 API 키가 필요하지 않습니다.
 
-### Backend
+### 백엔드
 
 ```powershell
 cd backend
@@ -22,11 +19,11 @@ python -m pip install -e ".[dev]"
 python -m uvicorn app.main:app --reload --port 8000
 ```
 
-FastAPI documentation is available at `http://localhost:8000/docs`.
+FastAPI 문서는 `http://localhost:8000/docs`에서 확인할 수 있습니다.
 
-### Frontend
+### 프론트엔드
 
-In a second terminal:
+두 번째 터미널에서 실행합니다.
 
 ```powershell
 cd frontend
@@ -34,11 +31,22 @@ npm install
 npm run dev
 ```
 
-Open `http://localhost:5173`. The frontend connects to
-`http://localhost:8000/api/v1` by default. Override it with
-`VITE_API_BASE_URL` when needed.
+브라우저에서 `http://localhost:5173`을 엽니다. 프론트엔드는 기본적으로
+`http://localhost:8000/api/v1`에 연결하며, 필요하면
+`VITE_API_BASE_URL` 환경변수로 변경할 수 있습니다.
 
-## Verification
+## 주요 기능
+
+- 거시경제, 가치평가, 수급, 위험관리, 유동성, 지정학 Agent 분석
+- Critic Agent의 출처·기준시점·점수 범위·한계 검증
+- 6개 세로형 페이더, Agent 활성화/비활성화 및 자동 100% 정규화
+- 기본 균형, 위험 방어, 가치 투자 프리셋
+- CVXPY 기반 TPA 최적화와 독립된 필수 위험·유동성 제약
+- 변경 전후 포트폴리오 및 시나리오 비교
+- SQLite 시나리오 저장과 통합 의사결정 보고서
+- Mock/LLM 데이터 구분 및 환경변수 기반 모델 연동
+
+## 검증
 
 ```powershell
 cd backend
@@ -49,24 +57,24 @@ npm test
 npm run build
 ```
 
-The integrated MVP has 18 passing backend tests and 6 passing frontend tests.
-The HTTP smoke test verifies that different Agent mixes produce materially
-different feasible allocations, zero total influence is rejected, and scenario
-snapshots persist in SQLite.
+통합 MVP는 백엔드 테스트 18개와 프론트엔드 테스트 6개를 통과했습니다.
+HTTP 스모크 테스트는 Agent 믹스 변경에 따라 최적 배분이 달라지는지,
+전 가중치 0 입력이 거부되는지, 시나리오가 SQLite에 저장되는지를 검증합니다.
 
-## Documentation
+## 문서
 
-- [Architecture](docs/architecture.md)
-- [API contract](docs/api-contract.md)
-- [Development plan and test log](docs/development-plan.md)
-- [Business scenarios](docs/business-scenarios.md)
-- [Validation report](docs/validation-report.md)
+- [시스템 아키텍처](docs/architecture.md)
+- [API 계약](docs/api-contract.md)
+- [개발 계획 및 테스트 기록](docs/development-plan.md)
+- [비즈니스 시나리오](docs/business-scenarios.md)
+- [검증 보고서](docs/validation-report.md)
 
-## Optional LLM mode
+## 선택적 LLM 모드
 
-Copy `.env.example` to `backend/.env`, select `mode=llm` on the analysis API,
-and configure `ALPHAMIX_LLM_API_URL`, `ALPHAMIX_LLM_MODEL`, and
-`ALPHAMIX_LLM_API_KEY`. Mock and LLM analyses use the same validated schema.
+`.env.example`을 `backend/.env`로 복사하고 분석 API에서 `mode=llm`을
+선택한 다음 `ALPHAMIX_LLM_API_URL`, `ALPHAMIX_LLM_MODEL`,
+`ALPHAMIX_LLM_API_KEY`를 설정합니다. Mock과 LLM 분석은 동일한 검증
+스키마를 사용하며, LLM 설명은 한국어로 요청됩니다.
 
-> AlphaMix is a decision-support competition prototype. Its sample assumptions
-> are illustrative and must not be interpreted as investment advice.
+> AlphaMix는 공모전용 의사결정 지원 프로토타입입니다. 샘플 가정은 설명을
+> 위한 것이며 투자 권유로 해석해서는 안 됩니다.

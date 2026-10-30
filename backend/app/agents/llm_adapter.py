@@ -41,7 +41,7 @@ class LLMConfig:
         if not model:
             missing.append("ALPHAMIX_LLM_MODEL")
         if missing:
-            raise ModelNotConfiguredError(f"LLM mode requires: {', '.join(missing)}")
+            raise ModelNotConfiguredError(f"LLM 모드에 필요한 설정이 없습니다: {', '.join(missing)}")
         return cls(api_url=api_url, api_key=api_key, model=model)
 
 
@@ -61,7 +61,7 @@ class OpenAICompatibleAdapter:
                     "temperature": 0,
                     "response_format": {"type": "json_object"},
                     "messages": [
-                        {"role": "system", "content": "Return evidence-based institutional portfolio analysis as strict JSON."},
+                        {"role": "system", "content": "근거 기반 기관 포트폴리오 분석을 엄격한 JSON 형식과 한국어 설명으로 반환하세요."},
                         {"role": "user", "content": _build_prompt(agent_id, agent_name)},
                     ],
                 },
@@ -74,27 +74,27 @@ class OpenAICompatibleAdapter:
             raw.setdefault("as_of", MOCK_AS_OF.isoformat())
             return AgentAnalysis.model_validate(raw)
         except (httpx.HTTPError, KeyError, IndexError, TypeError, json.JSONDecodeError, ValidationError) as exc:
-            raise AgentOutputError(f"Model request or output failed: {exc}") from exc
+            raise AgentOutputError(f"모델 요청 또는 출력 처리에 실패했습니다: {exc}") from exc
 
 
 def _decode_json_object(content: Any) -> dict[str, Any]:
     if not isinstance(content, str):
-        raise AgentOutputError("Model content must be a JSON string")
+        raise AgentOutputError("모델 응답 본문은 JSON 문자열이어야 합니다")
     text = content.strip()
     if text.startswith("```"):
         lines = text.splitlines()
         text = "\n".join(lines[1:-1])
     value = json.loads(text)
     if not isinstance(value, dict):
-        raise AgentOutputError("Model output must be a JSON object")
+        raise AgentOutputError("모델 출력은 JSON 객체여야 합니다")
     return value
 
 
 def _build_prompt(agent_id: str, agent_name: str) -> str:
     return (
-        f"Act as {agent_name} ({agent_id}). Analyze exactly: {', '.join(ASSET_IDS)}. "
-        "Return scores (-1..1 for every asset), sources (title, publisher, url, as_of), "
-        "rationale, confidence (0..1), uncertainties, and an ISO-8601 as_of. "
-        "Do not return markdown or unsourced claims."
+        f"{agent_name} ({agent_id}) 역할로 다음 자산만 분석하세요: {', '.join(ASSET_IDS)}. "
+        "모든 자산의 점수(-1..1), 출처(title, publisher, url, as_of), 분석 근거, "
+        "신뢰도(0..1), 불확실성, ISO-8601 형식의 as_of를 반환하세요. "
+        "설명 값은 한국어로 작성하고, 마크다운이나 출처 없는 주장은 반환하지 마세요."
     )
 

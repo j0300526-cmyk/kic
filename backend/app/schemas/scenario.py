@@ -28,7 +28,7 @@ class ScenarioSummary(StrictModel):
 
 
 class ReportRequest(StrictModel):
-    scenario_name: str = "Current mix"
+    scenario_name: str = "현재 믹스"
     result: OptimizationResponse
     agent_evidence: list[dict[str, Any]] = []
     critic_warnings: list[str] = []

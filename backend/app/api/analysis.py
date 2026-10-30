@@ -19,14 +19,14 @@ def get_latest_analysis(
     except ModelNotConfiguredError as exc:
         raise AlphaMixError(
             "MODEL_NOT_CONFIGURED",
-            "LLM mode requires provider URL, model name, and API key environment variables.",
+            "LLM 모드에는 제공자 URL, 모델명, API 키 환경변수가 필요합니다.",
             status_code=503,
             details={"fallback_mode": "mock"},
         ) from exc
     except AgentOutputError as exc:
         raise AlphaMixError(
             "INVALID_AGENT_OUTPUT",
-            "An agent response did not satisfy the structured output contract.",
+            "Agent 응답이 구조화된 출력 계약을 충족하지 못했습니다.",
             status_code=502,
         ) from exc
 

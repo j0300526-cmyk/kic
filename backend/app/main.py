@@ -22,7 +22,7 @@ settings = get_settings()
 app = FastAPI(
     title=settings.app_name,
     version="0.1.0",
-    description="Multi-Agent TPA portfolio decision support API",
+    description="멀티 Agent TPA 포트폴리오 의사결정 지원 API",
     lifespan=lifespan,
 )
 app.add_middleware(
@@ -42,7 +42,7 @@ async def validation_error_handler(_: Request, exc: RequestValidationError) -> J
         content={
             "error": {
                 "code": "VALIDATION_ERROR",
-                "message": "The request does not match the API contract.",
+                "message": "요청이 API 계약과 일치하지 않습니다.",
                 "details": {"errors": jsonable_encoder(exc.errors())},
             }
         },

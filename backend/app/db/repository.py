@@ -62,7 +62,7 @@ class ScenarioRepository:
         if row is None:
             raise AlphaMixError(
                 "SCENARIO_NOT_FOUND",
-                "The requested scenario was not found.",
+                "요청한 시나리오를 찾을 수 없습니다.",
                 status_code=404,
                 details={"scenario_id": scenario_id},
             )
@@ -76,7 +76,7 @@ class ScenarioRepository:
         if cursor.rowcount == 0:
             raise AlphaMixError(
                 "SCENARIO_NOT_FOUND",
-                "The requested scenario was not found.",
+                "요청한 시나리오를 찾을 수 없습니다.",
                 status_code=404,
                 details={"scenario_id": scenario_id},
             )

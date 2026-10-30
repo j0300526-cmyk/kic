@@ -1,50 +1,49 @@
-# AlphaMix MVP Validation Report
+# AlphaMix MVP 검증 보고서
 
-Validation date: 2026-10-31  
-Status: automated and HTTP integration verification passed
+검증일: 2026-10-31
+상태: 자동화 및 HTTP 통합 검증 통과
 
-## Evidence table
+## 검증 근거
 
-| Requirement | Test or evidence | Status |
+| 요구사항 | 테스트 또는 근거 | 상태 |
 | --- | --- | --- |
-| Fader change affects optimization | HTTP comparison produced a maximum allocation delta of 6.26%p | Passed |
-| Enabled weights total 100% | Backend normalization and frontend unit tests | Passed |
-| Zero total weight is rejected | HTTP 400 with `ZERO_AGENT_WEIGHT`; frontend alert test | Passed |
-| Input/output schema validation | Pydantic validation and API contract tests | Passed |
-| Optimization errors are handled | Infeasible cap and risk requests return structured errors | Passed |
-| Mandatory constraints hold | Solver constraints plus post-solve assertions, including zero Risk Agent influence | Passed |
-| Unsourced AI claims are warned | Critic missing-source test | Passed |
-| Portfolio totals 100% | HTTP results: 1.0 and 0.9999999999999999 | Passed |
-| Mock results are reproducible | Fixed assumptions and repeat-run equality tests | Passed |
+| 페이더 변경이 최적화에 반영됨 | HTTP 비교에서 최대 배분 차이 6.26%p 확인 | 통과 |
+| 활성 가중치 합계 100% | 백엔드 정규화 및 프론트엔드 단위 테스트 | 통과 |
+| 전 가중치 0 거부 | HTTP 400 `ZERO_AGENT_WEIGHT` 및 화면 경고 테스트 | 통과 |
+| 입출력 스키마 검증 | Pydantic 검증 및 API 계약 테스트 | 통과 |
+| 최적화 오류 처리 | 실행 불가능한 상한·위험 요청에 구조화 오류 반환 | 통과 |
+| 필수 제약 유지 | 위험관리 Agent 영향력 0을 포함한 최적화·사후 검증 | 통과 |
+| 출처 없는 AI 주장 경고 | Critic 출처 누락 테스트 | 통과 |
+| 포트폴리오 합계 100% | HTTP 결과 1.0 및 0.9999999999999999 | 통과 |
+| Mock 결과 재현성 | 고정 가정 및 반복 실행 동일성 테스트 | 통과 |
 
-## Final test runs
+## 최종 테스트 실행
 
-Executed from a clean source state with dependencies installed:
+의존성이 설치된 깨끗한 소스 상태에서 다음 명령을 실행했습니다.
 
 ```text
 backend> python -m pytest -q
 .................. [100%]
-18 passed
+18개 통과
 
 frontend> npm test
-Test Files  2 passed (2)
-Tests       6 passed (6)
+테스트 파일  2개 통과
+테스트       6개 통과
 
 frontend> npm run build
-TypeScript project build and Vite production build succeeded
+TypeScript 프로젝트 및 Vite 프로덕션 빌드 성공
 ```
 
-The HTTP smoke test confirmed:
+HTTP 스모크 테스트 확인 사항:
 
-- six Agent analyses and an approved Critic result;
-- portfolio weight sums within numerical tolerance;
-- a 6.26 percentage-point maximum allocation difference between balanced and
-  valuation-heavy mixes;
-- SQLite scenario creation and subsequent listing; and
-- a stable `ZERO_AGENT_WEIGHT` error for an all-zero mix.
+- 여섯 Agent 분석과 승인된 Critic 결과
+- 수치 허용오차 안의 포트폴리오 비중 합계
+- 기본 균형과 가치평가 중심 믹스 사이 최대 6.26%p 배분 차이
+- SQLite 시나리오 생성 및 조회
+- 전 가중치 0 입력에 대한 고정 `ZERO_AGENT_WEIGHT` 오류
 
-Automated browser screenshot QA was not completed because the available Windows
-browser controller could not safely determine the current Chrome URL. Component
-interaction tests, production rendering compilation, live frontend HTTP 200,
-and the complete API data path were verified instead.
+사용 가능한 Windows 브라우저 제어기가 현재 Chrome URL을 안전하게 확인하지
+못해 자동 스크린샷 QA는 완료하지 못했습니다. 대신 컴포넌트 상호작용 테스트,
+프로덕션 렌더링 컴파일, 프론트엔드 HTTP 200, 전체 API 데이터 경로를
+검증했습니다.
 

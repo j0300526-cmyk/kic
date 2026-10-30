@@ -17,7 +17,7 @@ def normalize_agent_weights(
         if not math.isfinite(value) or value < 0 or value > 100:
             raise AlphaMixError(
                 "VALIDATION_ERROR",
-                "Agent weights must be finite values between 0 and 100.",
+                "Agent 가중치는 0에서 100 사이의 유한한 값이어야 합니다.",
                 details={agent_id: value},
             )
         selected[agent_id] = value
@@ -26,8 +26,8 @@ def normalize_agent_weights(
     if total <= 0:
         raise AlphaMixError(
             "ZERO_AGENT_WEIGHT",
-            "At least one enabled agent must have a positive weight.",
-            details={"agent_weights": "sum must be greater than zero"},
+            "활성 Agent 중 하나 이상에 0보다 큰 가중치를 설정해야 합니다.",
+            details={"agent_weights": "가중치 합계는 0보다 커야 합니다"},
         )
 
     normalized = {agent_id: value / total for agent_id, value in selected.items()}
@@ -50,7 +50,7 @@ def mix_agent_scores(
     if missing:
         raise AlphaMixError(
             "ANALYSIS_NOT_FOUND",
-            "Analysis is missing for one or more enabled agents.",
+            "활성 Agent 중 하나 이상의 분석 결과가 누락되었습니다.",
             status_code=404,
             details={"agent_ids": missing},
         )

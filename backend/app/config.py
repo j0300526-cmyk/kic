@@ -31,7 +31,7 @@ class Settings(BaseSettings):
     def database_path(self) -> Path:
         prefix = "sqlite:///"
         if not self.database_url.startswith(prefix):
-            raise ValueError("The MVP supports only sqlite:/// database URLs.")
+            raise ValueError("MVP는 sqlite:/// 데이터베이스 URL만 지원합니다.")
         return Path(self.database_url.removeprefix(prefix)).resolve()
 
 

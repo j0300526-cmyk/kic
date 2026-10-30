@@ -1,95 +1,96 @@
-# AlphaMix Development Plan
+# AlphaMix 개발 계획
 
-## Delivery principle
+## 개발 원칙
 
-The first vertical slice must prove that changing the six agent faders changes
-the normalized opinions, adjusted expected returns, and optimized portfolio
-while all mandatory portfolio constraints remain enforced.
+첫 번째 수직 기능 단위는 여섯 Agent 페이더를 변경했을 때 정규화된 의견,
+조정 기대수익률, 최적 포트폴리오가 실제로 달라지고 모든 필수 포트폴리오
+제약은 계속 적용됨을 증명해야 합니다.
 
-## Workstreams
+## 작업 영역
 
-| Workstream | Scope |
+| 작업 영역 | 범위 |
 | --- | --- |
-| frontend-1 | Application shell, navigation, overview, analysis, report |
-| frontend-2 | Mixing faders, charts, presets, before/after comparison |
-| backend-1 | Agent schema, deterministic mock agents, LangGraph, critic |
-| backend-2 | Market assumptions, mixing, CVXPY optimization, API, SQLite |
-| business | Scenarios, financial assumptions, acceptance evidence |
+| frontend-1 | 애플리케이션 셸, 내비게이션, 종합 현황, 분석, 보고서 |
+| frontend-2 | 믹싱 페이더, 차트, 프리셋, 변경 전후 비교 |
+| backend-1 | Agent 스키마, 결정론적 Mock Agent, LangGraph, Critic |
+| backend-2 | 시장 가정, 믹싱, CVXPY 최적화, API, SQLite |
+| business | 시나리오, 금융 가정, 인수 검증 자료 |
 
-## Phases
+## 개발 단계
 
-### Phase 1 — contracts and structure
+### 1단계 — 계약과 구조
 
-- [x] Inspect and preserve the existing repository.
-- [x] Define architecture, API contract, and development plan.
-- [x] Scaffold backend and frontend packages.
-- Exit: contracts cover zero weights, source warnings, mandatory risk limits,
-  mock provenance, and reproducibility identifiers.
+- [x] 기존 저장소를 확인하고 보존합니다.
+- [x] 아키텍처, API 계약, 개발 계획을 정의합니다.
+- [x] 백엔드와 프론트엔드 패키지를 구성합니다.
+- 완료 기준: 0 가중치, 출처 경고, 필수 위험 한도, Mock 출처, 재현성
+  식별자가 계약에 포함됩니다.
 
-### Phase 2 — backend vertical slice
+### 2단계 — 백엔드 핵심 기능
 
-- Implement deterministic analyses for all six agents.
-- Run the critic and expose analysis results.
-- Normalize enabled weights and mix per-asset scores.
-- Adjust sample expected returns and solve with CVXPY.
-- Validate weight sum, caps, liquidity, and risk budget.
-- Exit: two materially different presets produce different feasible portfolios.
+- 여섯 Agent의 결정론적 분석을 구현합니다.
+- Critic을 실행하고 분석 결과를 제공합니다.
+- 활성 가중치를 정규화하고 자산별 점수를 통합합니다.
+- 샘플 기대수익률을 조정하고 CVXPY로 최적화합니다.
+- 비중 합계, 상한, 유동성, 위험 예산을 검증합니다.
+- 완료 기준: 서로 다른 두 프리셋이 서로 다른 실행 가능한 포트폴리오를 만듭니다.
 
-### Phase 3 — frontend vertical slice
+### 3단계 — 프론트엔드 핵심 기능
 
-- Build the institutional dashboard shell and all six routes/views.
-- Implement six vertical faders, enable controls, normalization, and presets.
-- Debounce optimization calls and render loading/error/empty states.
-- Render current versus baseline allocations and risk/return metrics.
-- Exit: a fader change visibly updates the allocation through the real API.
+- 기관투자자용 대시보드 셸과 여섯 화면을 구현합니다.
+- 세로형 페이더 6개, 활성 제어, 정규화, 프리셋을 구현합니다.
+- 최적화 요청에 디바운스를 적용하고 로딩·오류·빈 상태를 표시합니다.
+- 현재와 기준 자산배분, 위험·수익 지표를 표시합니다.
+- 완료 기준: 페이더 변경이 실제 API를 통해 자산배분에 반영됩니다.
 
-### Phase 4 — integration and persistence
+### 4단계 — 통합과 영속성
 
-- Save and reload scenarios in SQLite.
-- Compare multiple scenario snapshots.
-- Generate a structured on-screen report.
-- Add mock/LLM badges and evidence warnings.
-- Exit: saved scenarios survive an API restart.
+- SQLite에 시나리오를 저장하고 다시 불러옵니다.
+- 여러 시나리오 스냅샷을 비교합니다.
+- 구조화된 화면 보고서를 생성합니다.
+- Mock/LLM 배지와 근거 경고를 추가합니다.
+- 완료 기준: API 재시작 후에도 저장된 시나리오가 유지됩니다.
 
-### Phase 5 — LangGraph and model adapter
+### 5단계 — LangGraph와 모델 어댑터
 
-- Wire specialist nodes and critic/revision routing with one retry maximum.
-- Provide an environment-driven LLM adapter without changing response schemas.
-- Preserve deterministic mock mode as the default.
-- Exit: mock tests need no credentials; missing LLM configuration is explicit.
+- 전문 Agent 노드와 Critic·수정 라우팅을 연결하고 재시도는 최대 한 번으로 제한합니다.
+- 응답 스키마를 바꾸지 않는 환경변수 기반 LLM 어댑터를 제공합니다.
+- 결정론적 Mock 모드를 기본값으로 유지합니다.
+- 완료 기준: Mock 테스트는 인증정보가 필요 없고 LLM 설정 누락은 명확히 표시됩니다.
 
-### Phase 6 — verification and handoff
+### 6단계 — 검증과 인계
 
-- Backend unit and API tests with pytest.
-- Frontend normalization and interaction tests with Vitest.
-- Production builds and an end-to-end smoke test.
-- Document local startup, limitations, and sample workflows.
+- pytest로 백엔드 단위·API 테스트를 수행합니다.
+- Vitest로 프론트엔드 정규화·상호작용 테스트를 수행합니다.
+- 프로덕션 빌드와 엔드투엔드 스모크 테스트를 수행합니다.
+- 로컬 실행, 한계, 샘플 작업 흐름을 문서화합니다.
 
-## Acceptance checks
+## 인수 검증 항목
 
-1. Enabled agent weights normalize to 100% within tolerance.
-2. All-zero enabled weights stop calculation with a clear error.
-3. Balanced, defensive, and value mixes produce distinct adjusted returns and
-   at least two distinct portfolio allocations.
-4. Setting Risk Agent influence to zero does not remove mandatory asset caps,
-   minimum cash, liquidity, or risk constraints.
-5. Every agent output passes the Pydantic schema.
-6. The critic flags missing sources and inconsistent evidence.
-7. Optimizer infeasibility uses a stable structured error.
-8. Every successful portfolio sums to 100% and passes all constraints.
-9. Mock runs are deterministic and record model/data versions.
-10. Frontend clearly labels mock data.
+1. 활성 Agent 가중치는 허용오차 안에서 100%로 정규화됩니다.
+2. 활성 가중치가 모두 0이면 명확한 오류와 함께 계산을 중단합니다.
+3. 기본 균형, 위험 방어, 가치 투자 믹스는 서로 다른 조정 수익률과 최소 두 개의
+   서로 다른 포트폴리오를 생성합니다.
+4. 위험관리 Agent 영향력을 0으로 설정해도 자산 상한, 최소 현금, 유동성,
+   위험 제약이 유지됩니다.
+5. 모든 Agent 출력이 Pydantic 스키마를 통과합니다.
+6. Critic이 출처 누락과 근거 불일치를 표시합니다.
+7. 최적화 불가능 상태가 고정된 구조화 오류를 사용합니다.
+8. 모든 성공 포트폴리오의 합계가 100%이고 제약을 통과합니다.
+9. Mock 실행은 재현 가능하며 모델·데이터 버전을 기록합니다.
+10. 프론트엔드가 모의 데이터를 명확히 표시합니다.
 
-## Change and test log
+## 변경 및 테스트 기록
 
-Implementation updates append to this table rather than rewriting history.
+구현 변경은 기존 기록을 덮어쓰지 않고 이 표에 추가합니다.
 
-| Date | Phase | Change | Verification |
+| 날짜 | 단계 | 변경 사항 | 검증 결과 |
 | --- | --- | --- | --- |
-| 2026-10-31 | 1 | Initial architecture, API contract, and plan | Repository inspected; documentation review pending implementation |
-| 2026-10-31 | 2 | Added deterministic agents, Critic, mixing, CVXPY optimizer, mandatory constraints, and FastAPI endpoints | Backend suite: 18 passed; compileall succeeded |
-| 2026-10-31 | 3 | Added six-view React dashboard and vertical Mixing Console with presets, activation, normalization, and comparisons | Frontend suite: 6 passed; Vite production build succeeded |
-| 2026-10-31 | 4 | Connected frontend optimization and scenario payloads to the API and SQLite repository | HTTP analysis, optimization, save, and list flow succeeded |
-| 2026-10-31 | 5 | Added LangGraph fan-out, Critic revision loop, mock fallback, and environment-driven LLM adapter | Agent tests included in backend suite; missing LLM configuration is explicit |
-| 2026-10-31 | 6 | Ran full integration smoke checks and documented operation | Mix allocation delta 6.26%p; zero mix returned `ZERO_AGENT_WEIGHT`; browser automation unavailable |
+| 2026-10-31 | 1 | 초기 아키텍처, API 계약, 계획 작성 | 저장소 확인 및 문서 검토 완료 |
+| 2026-10-31 | 2 | 결정론적 Agent, Critic, 믹싱, CVXPY 최적화, 필수 제약, FastAPI 추가 | 백엔드 18개 테스트 및 compileall 통과 |
+| 2026-10-31 | 3 | 여섯 화면과 세로형 믹싱 콘솔, 프리셋, 활성화, 정규화, 비교 추가 | 프론트엔드 6개 테스트 및 Vite 빌드 통과 |
+| 2026-10-31 | 4 | 프론트엔드 최적화·시나리오를 API와 SQLite에 연결 | HTTP 분석·최적화·저장·조회 성공 |
+| 2026-10-31 | 5 | LangGraph 병렬 실행, Critic 수정 루프, Mock 대체 경로, LLM 어댑터 추가 | Agent 테스트 통과 및 LLM 설정 누락 처리 확인 |
+| 2026-10-31 | 6 | 전체 통합 스모크 검사와 실행 문서 작성 | 배분 차이 6.26%p, 0 믹스 오류 확인, 브라우저 자동화는 환경 제한 |
+| 2026-10-31 | 7 | 사용자 화면, README, API 보고서·오류 문구 한국어화 | 백엔드·프론트엔드 테스트와 프로덕션 빌드 재검증 |
 

@@ -80,7 +80,7 @@ def run_analysis(
     """Run all specialists and return the shared API response model."""
 
     if mode not in {"mock", "llm"}:
-        raise ValueError("mode must be 'mock' or 'llm'")
+        raise ValueError("mode는 'mock' 또는 'llm'이어야 합니다")
     if mode == "llm" and adapter is None:
         adapter = OpenAICompatibleAdapter()  # fail before fan-out if not configured
     state = build_analysis_graph(adapter).invoke(
