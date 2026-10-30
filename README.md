@@ -46,6 +46,20 @@ npm run dev
 - SQLite 시나리오 저장과 통합 의사결정 보고서
 - Mock/LLM 데이터 구분 및 환경변수 기반 모델 연동
 
+## 화면 예시
+
+### 종합 현황
+
+![AlphaMix 종합 현황 대시보드](docs/images/overview.png)
+
+### Agent 믹싱 콘솔
+
+![AlphaMix Agent 믹싱 콘솔](docs/images/mixing-console.png)
+
+### 포트폴리오 최적화
+
+![AlphaMix 포트폴리오 최적화](docs/images/portfolio-optimization.png)
+
 ## 검증
 
 ```powershell

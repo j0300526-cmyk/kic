@@ -13,6 +13,12 @@ const ReportView = lazy(() => import('./views/Report').then((module) => ({ defau
 const ScenariosView = lazy(() => import('./views/Scenarios').then((module) => ({ default: module.ScenariosView })))
 
 const SCENARIO_KEY = 'alphamix-scenarios-v1'
+const VIEW_IDS = new Set<ViewId>(['overview', 'agents', 'mixing', 'optimization', 'scenarios', 'report'])
+
+function readInitialView(): ViewId {
+  const requested = new URLSearchParams(window.location.search).get('view') as ViewId | null
+  return requested && VIEW_IDS.has(requested) ? requested : 'overview'
+}
 
 function seedScenarios(): Scenario[] {
   return ['balanced', 'defensive'].flatMap((preset) => {
@@ -40,7 +46,7 @@ function readScenarios(): Scenario[] {
 }
 
 export default function App() {
-  const [view, setView] = useState<ViewId>('overview')
+  const [view, setView] = useState<ViewId>(readInitialView)
   const [preset, setPreset] = useState('balanced')
   const [controls, setControls] = useState<AgentControl[]>(() => initialControls())
   const [analysis, setAnalysis] = useState<AnalysisRun>(mockAnalysis)
