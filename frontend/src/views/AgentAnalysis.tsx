@@ -5,20 +5,20 @@ import { DataBadge, Panel, SectionTitle } from '../components/ui'
 
 export function AgentAnalysisView({ analysis }: { analysis: AnalysisRun }) {
   return (
-    <div className="space-y-5">
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+    <div className="space-y-3">
+      <div className="flex flex-col gap-3 border-b border-line pb-3 sm:flex-row sm:items-end sm:justify-between">
         <div><p className="eyebrow">분석 근거 검토</p><h2 className="page-title">Agent별 분석과 근거</h2><p className="page-description">점수만이 아니라 출처, 신뢰도, 불확실성을 함께 검토합니다.</p></div>
         <DataBadge mode={analysis.mode} />
       </div>
-      <Panel className={analysis.critic.approved ? 'border-mint/20' : 'border-amber/30'}>
+      <Panel className={analysis.critic.approved ? 'border-positive/20' : 'border-amber/30'}>
         <div className="flex items-start gap-4">
-          <div className={`grid h-10 w-10 shrink-0 place-items-center rounded-xl ${analysis.critic.approved ? 'bg-mint/10 text-mint' : 'bg-amber/10 text-amber'}`}>{analysis.critic.approved ? <CheckCircle2 size={20} /> : <AlertTriangle size={20} />}</div>
-          <div className="min-w-0"><p className="font-medium text-white">Critic Agent · {analysis.critic.approved ? '근거 검증 통과' : '추가 검토 필요'}</p><p className="mt-1 text-sm leading-6 text-slate-500">6개 분석의 출처, 기준 시점, 점수 범위와 한계 공개 여부를 확인했습니다. Critic은 믹싱 가중치에 포함되지 않습니다.</p></div>
-          <span className="ml-auto hidden rounded-full border border-line px-3 py-1 text-[10px] font-bold text-slate-400 sm:block">믹싱 제외</span>
+          <div className={`grid h-9 w-9 shrink-0 place-items-center rounded ${analysis.critic.approved ? 'bg-positive/10 text-positive' : 'bg-amber/10 text-amber'}`}>{analysis.critic.approved ? <CheckCircle2 size={18} /> : <AlertTriangle size={18} />}</div>
+          <div className="min-w-0"><p className="text-sm font-medium text-white">Critic Agent · {analysis.critic.approved ? '근거 검증 통과' : '추가 검토 필요'}</p><p className="mt-1 text-xs leading-5 text-muted">6개 분석의 출처, 기준 시점, 점수 범위와 한계 공개 여부를 확인했습니다. Critic은 믹싱 가중치에 포함되지 않습니다.</p></div>
+          <span className="ml-auto hidden rounded border border-line px-3 py-1 text-[9px] font-bold text-slate-400 sm:block">믹싱 제외</span>
         </div>
       </Panel>
 
-      <div className="grid gap-4 xl:grid-cols-2">
+      <div className="grid gap-3 xl:grid-cols-2">
         {analysis.analyses.map((item) => {
           const meta = AGENT_META.find((agent) => agent.id === item.agent_id)!
           return (
@@ -27,7 +27,7 @@ export function AgentAnalysisView({ analysis }: { analysis: AnalysisRun }) {
               <SectionTitle eyebrow={meta.description} title={item.agent_name} action={<span className="font-mono text-xs text-mint">신뢰도 {Math.round(item.confidence * 100)}%</span>} />
               <div className="mb-5 grid grid-cols-4 gap-2">
                 {(Object.keys(item.scores) as AssetId[]).map((asset) => (
-                  <div key={asset} className="rounded-lg border border-line bg-ink/35 p-2 text-center"><p className="truncate text-[9px] text-slate-600">{ASSET_LABELS[asset]}</p><p className={`mt-1 font-mono text-sm font-semibold ${item.scores[asset] >= 0 ? 'text-mint' : 'text-red-300'}`}>{item.scores[asset] >= 0 ? '+' : ''}{item.scores[asset].toFixed(2)}</p></div>
+                  <div key={asset} className="rounded border border-line bg-surface p-2 text-center"><p className="truncate text-[9px] text-muted">{ASSET_LABELS[asset]}</p><p className={`mt-1 font-mono text-sm font-semibold ${item.scores[asset] >= 0 ? 'text-positive' : 'text-negative'}`}>{item.scores[asset] >= 0 ? '+' : ''}{item.scores[asset].toFixed(2)}</p></div>
                 ))}
               </div>
               <p className="text-sm leading-6 text-slate-300">{item.rationale}</p>

@@ -11,37 +11,37 @@
 }
 
 * { box-sizing: border-box; }
-html { background: #07111f; }
-body { margin: 0; min-width: 320px; min-height: 100vh; background: #07111f; }
+html { background: #0b0e11; }
+body { margin: 0; min-width: 320px; min-height: 100vh; background: #0b0e11; color: #eaecef; }
 button, input { font: inherit; }
 button { -webkit-tap-highlight-color: transparent; }
-button:focus-visible, input:focus-visible, a:focus-visible { outline: 2px solid #64f5c2; outline-offset: 2px; }
-::selection { background: rgba(100,245,194,.28); color: #fff; }
+button:focus-visible, input:focus-visible, a:focus-visible { outline: 2px solid #f0b90b; outline-offset: 2px; }
+::selection { background: rgba(240,185,11,.28); color: #fff; }
 ::-webkit-scrollbar { width: 8px; height: 8px; }
-::-webkit-scrollbar-track { background: #07111f; }
-::-webkit-scrollbar-thumb { border-radius: 999px; background: #24364b; }
+::-webkit-scrollbar-track { background: #0b0e11; }
+::-webkit-scrollbar-thumb { border-radius: 2px; background: #3c424b; }
 
 @layer components {
-  .panel { @apply rounded-2xl border border-line bg-panel/90 p-4 shadow-panel sm:p-5; }
+  .panel { @apply rounded-lg border border-line bg-panel p-4 shadow-panel; }
   .hero-panel {
-    @apply relative rounded-2xl border border-line bg-panel shadow-panel;
-    background-image:
-      radial-gradient(circle at 82% 20%, rgba(85,200,255,.14), transparent 24%),
-      radial-gradient(circle at 68% 80%, rgba(100,245,194,.08), transparent 25%),
-      linear-gradient(130deg, rgba(13,25,41,1), rgba(8,20,34,.96));
+    @apply relative rounded-lg border border-line bg-panel shadow-panel;
+    background-image: linear-gradient(120deg, rgba(240,185,11,.055), transparent 44%);
   }
   .hero-panel::after {
-    content: ''; position: absolute; inset: 0; opacity: .22; pointer-events: none;
-    background-image: linear-gradient(rgba(85,200,255,.12) 1px, transparent 1px), linear-gradient(90deg, rgba(85,200,255,.12) 1px, transparent 1px);
-    background-size: 42px 42px; mask-image: linear-gradient(90deg, transparent 35%, black);
+    content: ''; position: absolute; inset: 0; opacity: .13; pointer-events: none;
+    background-image: linear-gradient(rgba(132,142,156,.16) 1px, transparent 1px), linear-gradient(90deg, rgba(132,142,156,.16) 1px, transparent 1px);
+    background-size: 36px 36px; mask-image: linear-gradient(90deg, transparent 40%, black);
   }
-  .eyebrow { @apply mb-1 text-[10px] font-bold uppercase tracking-[.2em] text-mint/80; }
-  .page-title { @apply text-2xl font-semibold tracking-[-.035em] text-white sm:text-3xl; }
-  .page-description { @apply mt-2 max-w-2xl text-sm leading-6 text-slate-500; }
-  .text-gradient { background: linear-gradient(100deg, #64f5c2, #55c8ff); background-clip: text; -webkit-background-clip: text; color: transparent; }
-  .btn-primary { @apply inline-flex items-center gap-2 rounded-xl bg-mint px-4 py-2.5 text-xs font-semibold text-ink transition hover:bg-[#84f8d2] disabled:cursor-not-allowed disabled:opacity-40; }
-  .btn-secondary { @apply inline-flex items-center gap-2 rounded-xl border border-line bg-white/[.025] px-3 py-2 text-xs font-medium text-slate-300 transition hover:border-slate-600 hover:text-white; }
-  .input { @apply rounded-xl border border-line bg-ink/50 px-4 py-2.5 text-sm text-white placeholder:text-slate-700; }
+  .eyebrow { @apply mb-1 text-[10px] font-bold uppercase tracking-[.16em] text-mint; }
+  .page-title { @apply text-xl font-semibold tracking-[-.025em] text-white sm:text-2xl; }
+  .page-description { @apply mt-1 max-w-3xl text-xs leading-5 text-muted; }
+  .text-gradient { color: #f0b90b; }
+  .btn-primary { @apply inline-flex items-center gap-2 rounded bg-mint px-4 py-2 text-xs font-semibold text-ink transition hover:bg-[#f8d33a] disabled:cursor-not-allowed disabled:opacity-40; }
+  .btn-secondary { @apply inline-flex items-center gap-2 rounded border border-line bg-surface px-3 py-2 text-xs font-medium text-slate-300 transition hover:border-slate-500 hover:text-white; }
+  .input { @apply rounded border border-line bg-ink/70 px-3 py-2 text-sm text-white placeholder:text-slate-600; }
+  .terminal-label { @apply text-[10px] font-medium uppercase tracking-[.12em] text-muted; }
+  .terminal-value { @apply font-mono text-sm font-semibold tabular-nums text-white; }
+  .status-dot { @apply inline-block h-1.5 w-1.5 rounded-full; }
   .report-section { @apply grid gap-4 border-b border-line py-7 sm:grid-cols-[36px_1fr]; }
   .report-number { @apply font-mono text-xs text-mint; }
   .report-title { @apply text-base font-semibold text-white; }
@@ -49,23 +49,23 @@ button:focus-visible, input:focus-visible, a:focus-visible { outline: 2px solid 
 }
 
 .vertical-fader {
-  --agent-color: #64f5c2;
+  --agent-color: #f0b90b;
   appearance: none;
-  width: 142px;
-  height: 6px;
+  width: 132px;
+  height: 4px;
   transform: rotate(-90deg);
-  border-radius: 999px;
-  background: linear-gradient(90deg, var(--agent-color) 0%, var(--agent-color) var(--fader-progress, 50%), #1c2c40 var(--fader-progress, 50%), #1c2c40 100%);
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--agent-color) 0%, var(--agent-color) var(--fader-progress, 50%), #343a42 var(--fader-progress, 50%), #343a42 100%);
   cursor: ns-resize;
 }
 .vertical-fader::-webkit-slider-thumb {
-  appearance: none; width: 26px; height: 18px; border-radius: 4px; border: 1px solid rgba(255,255,255,.55);
-  background: repeating-linear-gradient(0deg, #dce7ea 0, #dce7ea 3px, #98a9ae 4px, #98a9ae 5px);
-  box-shadow: 0 3px 12px rgba(0,0,0,.45), 0 0 0 4px rgba(255,255,255,.04);
+  appearance: none; width: 24px; height: 16px; border-radius: 2px; border: 1px solid #eaecef;
+  background: repeating-linear-gradient(0deg, #eaecef 0, #eaecef 3px, #848e9c 4px, #848e9c 5px);
+  box-shadow: 0 2px 8px rgba(0,0,0,.55);
 }
 .vertical-fader::-moz-range-thumb {
-  width: 26px; height: 18px; border-radius: 4px; border: 1px solid rgba(255,255,255,.55);
-  background: #bac8cc; box-shadow: 0 3px 12px rgba(0,0,0,.45);
+  width: 24px; height: 16px; border-radius: 2px; border: 1px solid #eaecef;
+  background: #c7ccd1; box-shadow: 0 2px 8px rgba(0,0,0,.55);
 }
 .vertical-fader:disabled { cursor: not-allowed; }
 

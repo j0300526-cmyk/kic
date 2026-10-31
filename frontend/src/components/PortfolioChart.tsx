@@ -3,10 +3,10 @@ import { ASSET_LABELS } from '../data/mock'
 import type { AssetId, OptimizationResult } from '../types'
 
 const colors: Record<AssetId, string> = {
-  us_equity: '#55c8ff',
-  us_treasury: '#64f5c2',
-  gold: '#f6c85f',
-  cash: '#94a3b8',
+  us_equity: '#F0B90B',
+  us_treasury: '#2EBDFF',
+  gold: '#A78BFA',
+  cash: '#0ECB81',
 }
 
 export function PortfolioChart({ current, baseline, compact = false }: { current: OptimizationResult; baseline?: OptimizationResult | null; compact?: boolean }) {
@@ -20,19 +20,19 @@ export function PortfolioChart({ current, baseline, compact = false }: { current
     <div className={compact ? 'h-56' : 'h-72'} aria-label="포트폴리오 자산 비중 차트">
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={data} margin={{ top: 8, right: 4, left: -20, bottom: 0 }}>
-          <CartesianGrid stroke="#17283b" strokeDasharray="3 3" vertical={false} />
-          <XAxis dataKey="asset" tick={{ fill: '#718096', fontSize: 11 }} axisLine={false} tickLine={false} />
-          <YAxis tick={{ fill: '#59677a', fontSize: 10 }} axisLine={false} tickLine={false} unit="%" />
+          <CartesianGrid stroke="#2B3139" strokeDasharray="3 3" vertical={false} />
+          <XAxis dataKey="asset" tick={{ fill: '#848E9C', fontSize: 11 }} axisLine={false} tickLine={false} />
+          <YAxis tick={{ fill: '#5E6673', fontSize: 10 }} axisLine={false} tickLine={false} unit="%" />
           <Tooltip
             cursor={{ fill: 'rgba(255,255,255,.025)' }}
-            contentStyle={{ background: '#0d1929', border: '1px solid #1d3047', borderRadius: 10, color: '#fff', fontSize: 12 }}
+            contentStyle={{ background: '#181A20', border: '1px solid #2B3139', borderRadius: 4, color: '#fff', fontSize: 12 }}
             formatter={(value, name) => {
               const numericValue = Array.isArray(value) ? value[0] : value
               return [`${Number(numericValue ?? 0).toFixed(1)}%`, name === 'current' ? '현재' : '기준']
             }}
           />
-          {baseline && <Bar dataKey="baseline" fill="#24364b" radius={[4, 4, 0, 0]} maxBarSize={26} />}
-          <Bar dataKey="current" radius={[4, 4, 0, 0]} maxBarSize={baseline ? 26 : 42}>
+          {baseline && <Bar dataKey="baseline" fill="#3C424B" radius={[2, 2, 0, 0]} maxBarSize={26} isAnimationActive={false} />}
+          <Bar dataKey="current" radius={[2, 2, 0, 0]} maxBarSize={baseline ? 26 : 42} isAnimationActive={false}>
             {data.map((item) => <Cell key={item.key} fill={colors[item.key]} />)}
           </Bar>
         </BarChart>

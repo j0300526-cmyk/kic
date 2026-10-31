@@ -6,7 +6,7 @@ export function Panel({ children, className = '' }: PropsWithChildren<{ classNam
 
 export function SectionTitle({ eyebrow, title, action }: { eyebrow?: string; title: string; action?: ReactNode }) {
   return (
-    <div className="mb-5 flex items-end justify-between gap-4">
+    <div className="mb-4 flex items-end justify-between gap-4">
       <div>
         {eyebrow && <p className="eyebrow">{eyebrow}</p>}
         <h2 className="text-lg font-semibold tracking-tight text-white">{title}</h2>
@@ -17,20 +17,20 @@ export function SectionTitle({ eyebrow, title, action }: { eyebrow?: string; tit
 }
 
 export function Metric({ label, value, detail, tone = 'neutral' }: { label: string; value: string; detail?: string; tone?: 'neutral' | 'positive' | 'warning' }) {
-  const toneClass = tone === 'positive' ? 'text-mint' : tone === 'warning' ? 'text-amber' : 'text-white'
+  const toneClass = tone === 'positive' ? 'text-positive' : tone === 'warning' ? 'text-amber' : 'text-white'
   return (
-    <Panel className="min-w-0">
-      <p className="text-xs font-medium uppercase tracking-[.15em] text-slate-500">{label}</p>
-      <p className={`mt-3 text-2xl font-semibold tracking-tight ${toneClass}`}>{value}</p>
-      {detail && <p className="mt-2 truncate text-xs text-slate-500">{detail}</p>}
+    <Panel className="min-w-0 !p-3.5">
+      <p className="terminal-label">{label}</p>
+      <p className={`mt-2 font-mono text-xl font-semibold tracking-tight tabular-nums ${toneClass}`}>{value}</p>
+      {detail && <p className="mt-1.5 truncate text-[10px] text-muted">{detail}</p>}
     </Panel>
   )
 }
 
 export function DataBadge({ mode, online = true }: { mode: 'mock' | 'llm'; online?: boolean }) {
   return (
-    <span className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[10px] font-bold uppercase tracking-[.15em] ${
-      mode === 'mock' ? 'border-amber/25 bg-amber/10 text-amber' : 'border-mint/25 bg-mint/10 text-mint'
+    <span className={`inline-flex items-center gap-1.5 rounded border px-2 py-1 text-[9px] font-bold uppercase tracking-[.12em] ${
+      mode === 'mock' ? 'border-amber/25 bg-amber/10 text-amber' : 'border-positive/25 bg-positive/10 text-positive'
     }`}>
       <span className={`h-1.5 w-1.5 rounded-full ${online ? 'bg-current' : 'bg-slate-500'}`} />
       {mode === 'mock' ? '모의 데이터' : '실시간 LLM'}

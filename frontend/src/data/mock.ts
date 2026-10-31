@@ -9,12 +9,12 @@ export const ASSET_LABELS: Record<AssetId, string> = {
 }
 
 export const AGENT_META: Array<Omit<AgentControl, 'rawWeight' | 'enabled'>> = [
-  { id: 'macro', name: '거시경제 Agent', shortName: '거시경제', description: '금리 · 물가 · 경기 · 환율', color: '#55c8ff' },
-  { id: 'valuation', name: '가치평가 Agent', shortName: '가치평가', description: '자산별 내재가치와 밸류에이션', color: '#64f5c2' },
-  { id: 'flow', name: '수급 Agent', shortName: '수급', description: '수급 · 거래량 · 시장 심리', color: '#b794f4' },
-  { id: 'risk', name: '위험관리 Agent', shortName: '위험관리', description: '변동성 · 상관 · 손실 위험', color: '#ff8a8a' },
-  { id: 'liquidity', name: '유동성 Agent', shortName: '유동성', description: '현금화 가능성 · 유동성 제약', color: '#f6c85f' },
-  { id: 'geopolitical', name: '지정학 Agent', shortName: '지정학', description: '분쟁 · 무역 · 정책 위험', color: '#ff9f68' },
+  { id: 'macro', name: '거시경제 Agent', shortName: '거시경제', description: '금리 · 물가 · 경기 · 환율', color: '#2EBDFF' },
+  { id: 'valuation', name: '가치평가 Agent', shortName: '가치평가', description: '자산별 내재가치와 밸류에이션', color: '#0ECB81' },
+  { id: 'flow', name: '수급 Agent', shortName: '수급', description: '수급 · 거래량 · 시장 심리', color: '#A78BFA' },
+  { id: 'risk', name: '위험관리 Agent', shortName: '위험관리', description: '변동성 · 상관 · 손실 위험', color: '#F6465D' },
+  { id: 'liquidity', name: '유동성 Agent', shortName: '유동성', description: '현금화 가능성 · 유동성 제약', color: '#F0B90B' },
+  { id: 'geopolitical', name: '지정학 Agent', shortName: '지정학', description: '분쟁 · 무역 · 정책 위험', color: '#F97316' },
 ]
 
 export const PRESETS: Record<string, { label: string; description: string; weights: Record<AgentId, number> }> = {
