@@ -7,7 +7,7 @@ export type AgentId =
   | 'geopolitical'
 
 export type AssetId = 'us_equity' | 'us_treasury' | 'gold' | 'cash'
-export type ViewId = 'overview' | 'agents' | 'mixing' | 'optimization' | 'scenarios' | 'report'
+export type ViewId = 'overview' | 'agents' | 'riskmap' | 'mixing' | 'optimization' | 'scenarios' | 'report'
 
 export interface AgentControl {
   id: AgentId
@@ -108,4 +108,41 @@ export interface MarketSnapshot {
   cache_ttl_seconds: number
   items: MarketTickerItem[]
   notice: string
+}
+
+export type RiskEventType = 'conflict' | 'policy' | 'trade' | 'macro'
+
+export interface RiskEvent {
+  id: string
+  event_type: RiskEventType
+  severity: number
+  title: string
+  summary: string
+  url: string | null
+  publisher: string
+  published_at: string
+  source_country: string | null
+  location_name: string | null
+  latitude: number | null
+  longitude: number | null
+  location_confidence: number
+  keywords: string[]
+  agent_impacts: Record<AgentId, number>
+  asset_impacts: Record<AssetId, number>
+  rationale: string
+  data_mode: 'live' | 'mock'
+}
+
+export interface RiskEventFeed {
+  provider: 'gdelt' | 'mock'
+  status: 'live' | 'stale' | 'fallback'
+  source_label: string
+  source_url: string | null
+  as_of: string
+  fetched_at: string
+  cached: boolean
+  cache_ttl_seconds: number
+  window: '24h' | '7d'
+  events: RiskEvent[]
+  warnings: string[]
 }

@@ -1,4 +1,4 @@
-import type { AgentControl, AnalysisRun, MarketSnapshot, OptimizationResult } from '../types'
+import type { AgentControl, AnalysisRun, MarketSnapshot, OptimizationResult, RiskEventFeed } from '../types'
 
 const API_BASE = (import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api/v1').replace(/\/$/, '')
 
@@ -30,6 +30,7 @@ export const api = {
   baseUrl: API_BASE,
   getAnalysis: () => request<AnalysisRun>('/analysis/latest?mode=mock'),
   getMarketSnapshot: () => request<MarketSnapshot>('/market/snapshot'),
+  getRiskEvents: (window: '24h' | '7d' = '24h') => request<RiskEventFeed>(`/risk/events?window=${window}`),
   optimize: (analysisRunId: string, controls: AgentControl[]) => request<OptimizationResult>('/portfolio/optimize', {
     method: 'POST',
     body: JSON.stringify({

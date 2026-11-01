@@ -6,7 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
 
-from app.api import market, overview, portfolio, presets, reports, scenarios
+from app.api import market, overview, portfolio, presets, reports, risk_events, scenarios
 from app.config import get_settings
 from app.db.repository import get_scenario_repository
 from app.exceptions import AlphaMixError, alphamix_error_handler
@@ -56,6 +56,7 @@ for api_router in (
     presets.router,
     scenarios.router,
     reports.router,
+    risk_events.router,
 ):
     app.include_router(api_router, prefix="/api/v1")
 

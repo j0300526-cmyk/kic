@@ -15,6 +15,8 @@ class Settings(BaseSettings):
     model_api_key: str | None = None
     market_data_cache_ttl_seconds: int = 60
     market_data_timeout_seconds: float = 6.0
+    news_data_cache_ttl_seconds: int = 900
+    news_data_timeout_seconds: float = 12.0
 
     model_config = SettingsConfigDict(
         env_prefix="ALPHAMIX_",

@@ -209,6 +209,40 @@ fallback을 반환합니다.
 연구·교육용 로컬 데모에만 사용하며 공개 서비스에서는 라이선스된 공급자로
 교체해야 합니다.
 
+### `GET /risk/events?window=24h`
+
+GDELT DOC 2.0 기사 메타데이터를 수집해 분쟁·정책·무역·거시경제 이벤트로
+분류하고, 지도 위치와 Agent·자산별 잠재 영향을 반환합니다. `window`은 `24h`
+또는 `7d`입니다.
+
+```json
+{
+  "provider": "gdelt",
+  "status": "live",
+  "source_label": "GDELT DOC 2.0",
+  "cached": false,
+  "cache_ttl_seconds": 900,
+  "window": "24h",
+  "events": [{
+    "id": "9a1f...",
+    "event_type": "conflict",
+    "severity": 5,
+    "title": "...",
+    "location_name": "우크라이나",
+    "latitude": 50.4501,
+    "longitude": 30.5234,
+    "agent_impacts": {"risk": 0.78, "geopolitical": 0.95},
+    "asset_impacts": {"us_equity": -0.6, "gold": 0.78},
+    "data_mode": "live"
+  }],
+  "warnings": ["자동 분류·위치 추정 결과이며 원문과 복수 출처를 교차 확인해야 합니다."]
+}
+```
+
+`status`는 `live`, `stale`, `fallback` 중 하나이며 GDELT 호출 실패 시 마지막
+정상 응답 또는 `data_mode=mock`인 모의 이벤트를 반환합니다. 모의 fallback은
+반복적인 외부 재시도를 막기 위해 최대 5분 캐시합니다.
+
 ### `GET /overview`
 
 간단한 모의 시장 스냅샷과 최신 기준 자산배분을 반환합니다.
