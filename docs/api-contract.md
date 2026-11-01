@@ -175,6 +175,40 @@
 
 ## 5. 종합 현황과 보고서
 
+### `GET /market/snapshot`
+
+상단 시장 티커용 Yahoo Finance 지연 시세를 반환합니다. S&P 500(`^GSPC`),
+미국 10년물 금리(`^TNX`), 금 선물(`GC=F`), 달러지수(`DX-Y.NYB`)를 60초
+메모리 캐시하며, 외부 연결 실패 시 마지막 정상값 또는 명확히 표시된 샘플
+fallback을 반환합니다.
+
+```json
+{
+  "provider": "yahoo_finance",
+  "status": "delayed",
+  "source_label": "Yahoo Finance",
+  "as_of": "2026-10-30T20:47:43Z",
+  "cached": false,
+  "cache_ttl_seconds": 60,
+  "items": [
+    {
+      "id": "sp500",
+      "symbol": "^GSPC",
+      "label": "S&P 500",
+      "value": 7580.07,
+      "formatted_value": "7,580.07",
+      "formatted_change": "-1.82%",
+      "direction": "negative"
+    }
+  ],
+  "notice": "Yahoo Finance 제공 지연 시세입니다."
+}
+```
+
+`status`는 `delayed`, `stale`, `fallback` 중 하나입니다. Yahoo Finance 데이터는
+연구·교육용 로컬 데모에만 사용하며 공개 서비스에서는 라이선스된 공급자로
+교체해야 합니다.
+
 ### `GET /overview`
 
 간단한 모의 시장 스냅샷과 최신 기준 자산배분을 반환합니다.

@@ -3,7 +3,7 @@ import { Shell } from './components/Shell'
 import { initialControls, localPreview, mockAnalysis, PRESETS } from './data/mock'
 import { api } from './lib/api'
 import { normalizeWeights } from './lib/mixing'
-import type { AgentControl, AgentId, AnalysisRun, OptimizationResult, Scenario, ViewId } from './types'
+import type { AgentControl, AgentId, AnalysisRun, MarketSnapshot, OptimizationResult, Scenario, ViewId } from './types'
 
 const AgentAnalysisView = lazy(() => import('./views/AgentAnalysis').then((module) => ({ default: module.AgentAnalysisView })))
 const MixingView = lazy(() => import('./views/Mixing').then((module) => ({ default: module.MixingView })))
@@ -50,6 +50,7 @@ export default function App() {
   const [preset, setPreset] = useState('balanced')
   const [controls, setControls] = useState<AgentControl[]>(() => initialControls())
   const [analysis, setAnalysis] = useState<AnalysisRun>(mockAnalysis)
+  const [marketSnapshot, setMarketSnapshot] = useState<MarketSnapshot | null>(null)
   const [result, setResult] = useState<OptimizationResult | null>(() => localPreview(initialControls()))
   const [baseline, setBaseline] = useState<OptimizationResult | null>(() => localPreview(initialControls()))
   const [busy, setBusy] = useState(false)
@@ -64,6 +65,18 @@ export default function App() {
       .then((data) => { if (active) { setAnalysis(data); setServerOnline(true) } })
       .catch(() => { if (active) setServerOnline(false) })
     return () => { active = false }
+  }, [])
+
+  useEffect(() => {
+    let active = true
+    const refreshMarket = () => {
+      api.getMarketSnapshot()
+        .then((data) => { if (active) setMarketSnapshot(data) })
+        .catch(() => undefined)
+    }
+    refreshMarket()
+    const timer = window.setInterval(refreshMarket, 60_000)
+    return () => { active = false; window.clearInterval(timer) }
   }, [])
 
   useEffect(() => {
@@ -146,7 +159,7 @@ export default function App() {
   }
 
   return (
-    <Shell view={view} onViewChange={setView} serverOnline={serverOnline} busy={busy}>
+    <Shell view={view} onViewChange={setView} serverOnline={serverOnline} busy={busy} marketSnapshot={marketSnapshot}>
       <Suspense fallback={<div className="grid min-h-[60vh] place-items-center text-sm text-slate-500">화면을 불러오는 중…</div>}>
         {content}
       </Suspense>

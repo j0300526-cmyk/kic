@@ -8,8 +8,8 @@ Approach) 최적화 엔진이 사용자가 설정한 믹스를 투자 가능한 
 변환합니다.
 
 MVP의 범위는 의사결정 지원이며 주문관리나 자율매매 시스템은 포함하지
-않습니다. 결정론적 모의 분석과 샘플 시장 데이터를 사용하므로 API 키 없이
-실행할 수 있습니다.
+않습니다. Agent 분석은 결정론적 모의 데이터를 사용하고, 상단 시장 티커는
+Yahoo Finance 지연 시세를 사용하므로 API 키 없이 실행할 수 있습니다.
 
 ## 2. 시스템 구성
 
@@ -23,9 +23,10 @@ FastAPI / Pydantic
   분석 서비스 ----- LangGraph 워크플로 ----- 전문 Agent 6개 + Critic
   믹싱 서비스 ----- 점수 통합
   포트폴리오 서비스 --- CVXPY TPA 최적화
+  시장 데이터 서비스 --- Yahoo Finance 지연 시세 + 60초 캐시
   시나리오 서비스 ----- SQLite 저장소
-                    |
-                 결정론적 샘플 데이터
+             |                         |
+        결정론적 샘플 데이터       Yahoo Finance
 ```
 
 ## 3. 주요 구성요소
@@ -45,6 +46,8 @@ FastAPI / Pydantic
 - `backend/app/schemas`: 공용 Pydantic 요청·응답 계약입니다.
 - `backend/app/agents`: 전문 Agent, Critic, LangGraph 오케스트레이션 그래프입니다.
 - `backend/app/services`: 점수 믹싱, 최적화, 시나리오, 보고서 서비스입니다.
+- 시장 데이터 서비스는 네 지표를 병렬 조회하고 60초 메모리 캐시, 마지막 정상값,
+  명시적 샘플 fallback 순으로 장애를 처리합니다.
 - `backend/app/data`: 재현 가능한 실행을 위한 버전별 샘플 가정입니다.
 - `backend/app/db`: SQLite 모델과 저장소입니다.
 
@@ -114,4 +117,6 @@ maximize adjusted_return @ w - risk_aversion * quad_form(w, covariance)
 - 출처가 하나도 없는 Agent 주장은 Critic이 경고로 표시합니다.
 - 최적화 엔진은 응답 전에 비중 합계와 모든 제약을 수치 허용오차 안에서
   재검증합니다.
+- Yahoo Finance 시세는 지연 데이터로 표시하고 영속 저장하지 않습니다. 공개·상업
+  서비스에서는 재배포 권한이 있는 정식 공급자로 provider를 교체해야 합니다.
 

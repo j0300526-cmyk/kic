@@ -10,7 +10,7 @@ import {
   X,
 } from 'lucide-react'
 import { useState, type PropsWithChildren } from 'react'
-import type { ViewId } from '../types'
+import type { MarketSnapshot, ViewId } from '../types'
 import { DataBadge } from './ui'
 
 const navigation: Array<{ id: ViewId; label: string; sub: string; icon: typeof CircleGauge }> = [
@@ -22,23 +22,41 @@ const navigation: Array<{ id: ViewId; label: string; sub: string; icon: typeof C
   { id: 'report', label: '의사결정 보고서', sub: '근거와 한계', icon: FileText },
 ]
 
-const marketTape = [
-  { label: 'S&P 500', value: '5,822.14', change: '+0.63%', positive: true },
-  { label: '미국 10년물', value: '4.18%', change: '-3.2bp', positive: true },
-  { label: '금', value: '$2,741', change: '+0.41%', positive: true },
-  { label: '달러 지수', value: '103.87', change: '-0.18%', positive: false },
+const fallbackMarketTape = [
+  { id: 'sp500', symbol: '^GSPC', label: 'S&P 500', formatted_value: '—', formatted_change: '—', direction: 'flat' as const, market_time: '' },
+  { id: 'us10y', symbol: '^TNX', label: '미국 10년물', formatted_value: '—', formatted_change: '—', direction: 'flat' as const, market_time: '' },
+  { id: 'gold', symbol: 'GC=F', label: '금', formatted_value: '—', formatted_change: '—', direction: 'flat' as const, market_time: '' },
+  { id: 'dxy', symbol: 'DX-Y.NYB', label: '달러 지수', formatted_value: '—', formatted_change: '—', direction: 'flat' as const, market_time: '' },
 ]
+
+const MARKET_TIME_FORMATTER = new Intl.DateTimeFormat('ko-KR', {
+  hour: '2-digit',
+  minute: '2-digit',
+  timeZone: 'Asia/Seoul',
+})
 
 interface ShellProps extends PropsWithChildren {
   view: ViewId
   onViewChange: (view: ViewId) => void
   serverOnline: boolean
   busy: boolean
+  marketSnapshot: MarketSnapshot | null
 }
 
-export function Shell({ view, onViewChange, serverOnline, busy, children }: ShellProps) {
+export function Shell({ view, onViewChange, serverOnline, busy, marketSnapshot, children }: ShellProps) {
   const [mobileOpen, setMobileOpen] = useState(false)
   const current = navigation.find((item) => item.id === view) ?? navigation[0]
+  const marketTape = marketSnapshot?.items ?? fallbackMarketTape
+  const marketTime = marketSnapshot
+    ? MARKET_TIME_FORMATTER.format(new Date(marketSnapshot.as_of))
+    : null
+  const marketStatus = marketSnapshot?.status === 'delayed'
+    ? `${marketSnapshot.source_label} · 지연 시세 · ${marketTime}`
+    : marketSnapshot?.status === 'stale'
+      ? `${marketSnapshot.source_label} · 마지막 정상 시세 · ${marketTime}`
+      : marketSnapshot?.status === 'fallback'
+        ? `${marketSnapshot.source_label} · Yahoo 연결 실패`
+        : '시장 데이터 불러오는 중'
 
   const nav = (
     <>
@@ -119,15 +137,15 @@ export function Shell({ view, onViewChange, serverOnline, busy, children }: Shel
             </div>
           </div>
         </header>
-        <div className="flex h-9 items-center gap-5 overflow-x-auto border-b border-line bg-ink px-4 sm:px-5" aria-label="샘플 시장 현황">
+        <div className="flex h-9 items-center gap-5 overflow-x-auto border-b border-line bg-ink px-4 sm:px-5" aria-label="시장 현황">
           {marketTape.map((item) => (
-            <div key={item.label} className="flex shrink-0 items-center gap-2 text-[10px]">
+            <div key={item.id} className="flex shrink-0 items-center gap-2 text-[10px]" title={`${item.symbol} · ${item.market_time || '연결 대기'}`}>
               <span className="text-muted">{item.label}</span>
-              <span className="font-mono font-semibold text-slate-200">{item.value}</span>
-              <span className={`font-mono ${item.positive ? 'text-positive' : 'text-negative'}`}>{item.change}</span>
+              <span className="font-mono font-semibold text-slate-200">{item.formatted_value}</span>
+              <span className={`font-mono ${item.direction === 'positive' ? 'text-positive' : item.direction === 'negative' ? 'text-negative' : 'text-muted'}`}>{item.formatted_change}</span>
             </div>
           ))}
-          <span className="ml-auto hidden shrink-0 text-[9px] text-slate-600 xl:block">샘플 시장 데이터 · 실시간 시세 아님</span>
+          <span className={`ml-auto hidden shrink-0 text-[9px] xl:block ${marketSnapshot?.status === 'delayed' ? 'text-cyan' : marketSnapshot?.status === 'stale' || marketSnapshot?.status === 'fallback' ? 'text-amber' : 'text-muted'}`} title={marketSnapshot?.notice}>{marketStatus}</span>
         </div>
         <main className="mx-auto max-w-[1720px] p-3 sm:p-4">{children}</main>
       </div>

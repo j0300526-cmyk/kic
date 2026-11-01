@@ -1,4 +1,4 @@
-import type { AgentControl, AnalysisRun, OptimizationResult } from '../types'
+import type { AgentControl, AnalysisRun, MarketSnapshot, OptimizationResult } from '../types'
 
 const API_BASE = (import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api/v1').replace(/\/$/, '')
 
@@ -29,6 +29,7 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
 export const api = {
   baseUrl: API_BASE,
   getAnalysis: () => request<AnalysisRun>('/analysis/latest?mode=mock'),
+  getMarketSnapshot: () => request<MarketSnapshot>('/market/snapshot'),
   optimize: (analysisRunId: string, controls: AgentControl[]) => request<OptimizationResult>('/portfolio/optimize', {
     method: 'POST',
     body: JSON.stringify({

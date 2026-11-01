@@ -6,7 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
 
-from app.api import overview, portfolio, presets, reports, scenarios
+from app.api import market, overview, portfolio, presets, reports, scenarios
 from app.config import get_settings
 from app.db.repository import get_scenario_repository
 from app.exceptions import AlphaMixError, alphamix_error_handler
@@ -51,6 +51,7 @@ async def validation_error_handler(_: Request, exc: RequestValidationError) -> J
 
 for api_router in (
     overview.router,
+    market.router,
     portfolio.router,
     presets.router,
     scenarios.router,

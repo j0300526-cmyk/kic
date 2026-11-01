@@ -13,6 +13,8 @@ class Settings(BaseSettings):
     model_provider: str | None = None
     model_name: str | None = None
     model_api_key: str | None = None
+    market_data_cache_ttl_seconds: int = 60
+    market_data_timeout_seconds: float = 6.0
 
     model_config = SettingsConfigDict(
         env_prefix="ALPHAMIX_",

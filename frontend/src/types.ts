@@ -81,3 +81,31 @@ export interface Scenario {
   controls: AgentControl[]
   result: OptimizationResult
 }
+
+export interface MarketTickerItem {
+  id: 'sp500' | 'us10y' | 'gold' | 'dxy'
+  symbol: string
+  label: string
+  value: number
+  formatted_value: string
+  change: number
+  change_percent: number
+  formatted_change: string
+  direction: 'positive' | 'negative' | 'flat'
+  currency: string | null
+  market_time: string
+  source_url: string | null
+}
+
+export interface MarketSnapshot {
+  provider: 'yahoo_finance' | 'mock'
+  status: 'delayed' | 'stale' | 'fallback'
+  source_label: string
+  source_url: string | null
+  as_of: string
+  fetched_at: string
+  cached: boolean
+  cache_ttl_seconds: number
+  items: MarketTickerItem[]
+  notice: string
+}
