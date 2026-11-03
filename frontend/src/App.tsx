@@ -11,11 +11,12 @@ const MixingView = lazy(() => import('./views/Mixing').then((module) => ({ defau
 const OptimizationView = lazy(() => import('./views/Optimization').then((module) => ({ default: module.OptimizationView })))
 const Overview = lazy(() => import('./views/Overview').then((module) => ({ default: module.Overview })))
 const ReportView = lazy(() => import('./views/Report').then((module) => ({ default: module.ReportView })))
+const ReplayView = lazy(() => import('./views/Replay').then((module) => ({ default: module.ReplayView })))
 const RiskMapView = lazy(() => import('./views/RiskMap').then((module) => ({ default: module.RiskMapView })))
 const ScenariosView = lazy(() => import('./views/Scenarios').then((module) => ({ default: module.ScenariosView })))
 
 const SCENARIO_KEY = 'alphamix-scenarios-v1'
-const VIEW_IDS = new Set<ViewId>(['overview', 'agents', 'committee', 'riskmap', 'mixing', 'optimization', 'scenarios', 'report'])
+const VIEW_IDS = new Set<ViewId>(['overview', 'agents', 'committee', 'riskmap', 'replay', 'mixing', 'optimization', 'scenarios', 'report'])
 
 function readInitialView(): ViewId {
   const requested = new URLSearchParams(window.location.search).get('view') as ViewId | null
@@ -186,6 +187,7 @@ export default function App() {
     case 'agents': content = <AgentAnalysisView analysis={analysis} />; break
     case 'committee': content = <CommitteeView analysis={analysis} controls={controls} onApplyProposal={applyCommitteeProposal} />; break
     case 'riskmap': content = <RiskMapView feed={riskFeed} onApplyEvent={applyRiskEvent} />; break
+    case 'replay': content = <ReplayView result={sharedResult} />; break
     case 'mixing': content = <MixingView controls={controls} preset={preset} result={result} baseline={baseline} error={error} onPreset={applyPreset} onWeight={updateWeight} onToggle={toggleAgent} onReset={() => applyPreset('balanced')} onOpenOptimization={() => setView('optimization')} />; break
     case 'optimization': content = <OptimizationView result={sharedResult} baseline={baseline} />; break
     case 'scenarios': content = <ScenariosView scenarios={scenarios} onSave={saveScenario} onLoad={(scenario) => { setControls(scenario.controls); setPreset(scenario.preset); setView('mixing') }} onDelete={(id) => setScenarios((items) => items.filter((item) => item.id !== id))} />; break

@@ -47,6 +47,8 @@ npm run dev
 - Yahoo Finance 기반 S&P 500·미국 10년물·금·달러지수 지연 시세 티커
 - GDELT 글로벌 뉴스와 코드 기반 세계 지도를 결합한 분쟁·정책·무역·거시경제 리스크 화면
 - 지도 이벤트의 Agent 민감도·자산 영향 확인 및 믹싱 콘솔 반영
+- Yahoo Finance 역사 가격 기반 포트폴리오 리플레이와 시점 슬라이더
+- SPY·IEF·GLD·BIL 프록시의 누적 성과·낙폭·자산 기여도 비교
 - 기본 균형, 위험 방어, 가치 투자 프리셋
 - CVXPY 기반 TPA 최적화와 독립된 필수 위험·유동성 제약
 - 변경 전후 포트폴리오 및 시나리오 비교
@@ -75,6 +77,10 @@ npm run dev
 
 ![AlphaMix Agent 투자위원회](docs/images/agent-committee.png)
 
+### 역사적 포트폴리오 리플레이
+
+![AlphaMix 역사적 포트폴리오 리플레이](docs/images/historical-replay.png)
+
 ## 검증
 
 ```powershell
@@ -86,7 +92,7 @@ npm test
 npm run build
 ```
 
-통합 MVP는 백엔드 테스트 23개와 프론트엔드 테스트 13개를 통과했습니다.
+통합 MVP는 백엔드 테스트 26개와 프론트엔드 테스트 14개를 통과했습니다.
 HTTP 스모크 테스트는 Agent 믹스 변경에 따라 최적 배분이 달라지는지,
 전 가중치 0 입력이 거부되는지, 시나리오가 SQLite에 저장되는지를 검증합니다.
 

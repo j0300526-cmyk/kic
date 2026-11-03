@@ -7,7 +7,7 @@ export type AgentId =
   | 'geopolitical'
 
 export type AssetId = 'us_equity' | 'us_treasury' | 'gold' | 'cash'
-export type ViewId = 'overview' | 'agents' | 'committee' | 'riskmap' | 'mixing' | 'optimization' | 'scenarios' | 'report'
+export type ViewId = 'overview' | 'agents' | 'committee' | 'riskmap' | 'replay' | 'mixing' | 'optimization' | 'scenarios' | 'report'
 
 export interface AgentControl {
   id: AgentId
@@ -144,5 +144,37 @@ export interface RiskEventFeed {
   cache_ttl_seconds: number
   window: '24h' | '7d'
   events: RiskEvent[]
+  warnings: string[]
+}
+
+export type ReplayRange = '6mo' | '1y' | '3y'
+
+export interface ReplayAssetValues {
+  us_equity: number
+  us_treasury: number
+  gold: number
+  cash: number
+}
+
+export interface MarketReplayPoint {
+  date: string
+  prices: ReplayAssetValues
+  normalized: ReplayAssetValues
+}
+
+export interface MarketReplay {
+  provider: 'yahoo_finance' | 'mock'
+  status: 'historical' | 'stale' | 'fallback'
+  source_label: string
+  source_url: string | null
+  as_of: string
+  fetched_at: string
+  cached: boolean
+  cache_ttl_seconds: number
+  range: ReplayRange
+  interval: '1d'
+  proxy_symbols: Record<AssetId, string>
+  points: MarketReplayPoint[]
+  notice: string
   warnings: string[]
 }

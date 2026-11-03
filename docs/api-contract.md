@@ -209,6 +209,41 @@ fallback을 반환합니다.
 연구·교육용 로컬 데모에만 사용하며 공개 서비스에서는 라이선스된 공급자로
 교체해야 합니다.
 
+### `GET /market/replay?range=1y`
+
+역사적 포트폴리오 리플레이를 위한 일별 조정 종가를 반환합니다. `range`는
+`6mo`, `1y`, `3y` 중 하나이며 미국 주식 `SPY`, 미국 국채 `IEF`, 금 `GLD`,
+현금 대용 단기국채 `BIL`을 사용합니다.
+
+```json
+{
+  "provider": "yahoo_finance",
+  "status": "historical",
+  "source_label": "Yahoo Finance",
+  "as_of": "2026-11-02",
+  "cached": false,
+  "cache_ttl_seconds": 1800,
+  "range": "1y",
+  "interval": "1d",
+  "proxy_symbols": {
+    "us_equity": "SPY",
+    "us_treasury": "IEF",
+    "gold": "GLD",
+    "cash": "BIL"
+  },
+  "points": [{
+    "date": "2025-11-03",
+    "prices": {"us_equity": 683.34, "us_treasury": 96.83, "gold": 369.06, "cash": 91.55},
+    "normalized": {"us_equity": 100.0, "us_treasury": 100.0, "gold": 100.0, "cash": 100.0}
+  }],
+  "warnings": ["거래비용·세금·리밸런싱과 과거 Agent 판단은 포함하지 않습니다."]
+}
+```
+
+네 자산의 공통 거래일만 사용합니다. 외부 연결 실패 시 `provider=mock`,
+`status=fallback`과 결정론적 모의 이력을 반환하며 화면에 실제 가격이 아님을
+명시합니다.
+
 ### `GET /risk/events?window=24h`
 
 GDELT DOC 2.0 기사 메타데이터를 수집해 분쟁·정책·무역·거시경제 이벤트로
