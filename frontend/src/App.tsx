@@ -6,6 +6,7 @@ import { normalizeWeights } from './lib/mixing'
 import type { AgentControl, AgentId, AnalysisRun, MarketSnapshot, OptimizationResult, RiskEvent, RiskEventFeed, Scenario, ViewId } from './types'
 
 const AgentAnalysisView = lazy(() => import('./views/AgentAnalysis').then((module) => ({ default: module.AgentAnalysisView })))
+const CommitteeView = lazy(() => import('./views/Committee').then((module) => ({ default: module.CommitteeView })))
 const MixingView = lazy(() => import('./views/Mixing').then((module) => ({ default: module.MixingView })))
 const OptimizationView = lazy(() => import('./views/Optimization').then((module) => ({ default: module.OptimizationView })))
 const Overview = lazy(() => import('./views/Overview').then((module) => ({ default: module.Overview })))
@@ -14,7 +15,7 @@ const RiskMapView = lazy(() => import('./views/RiskMap').then((module) => ({ def
 const ScenariosView = lazy(() => import('./views/Scenarios').then((module) => ({ default: module.ScenariosView })))
 
 const SCENARIO_KEY = 'alphamix-scenarios-v1'
-const VIEW_IDS = new Set<ViewId>(['overview', 'agents', 'riskmap', 'mixing', 'optimization', 'scenarios', 'report'])
+const VIEW_IDS = new Set<ViewId>(['overview', 'agents', 'committee', 'riskmap', 'mixing', 'optimization', 'scenarios', 'report'])
 
 function readInitialView(): ViewId {
   const requested = new URLSearchParams(window.location.search).get('view') as ViewId | null
@@ -169,11 +170,21 @@ export default function App() {
     setPreset('custom')
     setView('mixing')
   }
+  const applyCommitteeProposal = (weights: Record<AgentId, number>) => {
+    setControls((items) => items.map((item) => ({
+      ...item,
+      enabled: true,
+      rawWeight: weights[item.id],
+    })))
+    setPreset('custom')
+    setView('mixing')
+  }
 
   const sharedResult = result ?? baseline ?? localPreview(initialControls())!
   let content
   switch (view) {
     case 'agents': content = <AgentAnalysisView analysis={analysis} />; break
+    case 'committee': content = <CommitteeView analysis={analysis} controls={controls} onApplyProposal={applyCommitteeProposal} />; break
     case 'riskmap': content = <RiskMapView feed={riskFeed} onApplyEvent={applyRiskEvent} />; break
     case 'mixing': content = <MixingView controls={controls} preset={preset} result={result} baseline={baseline} error={error} onPreset={applyPreset} onWeight={updateWeight} onToggle={toggleAgent} onReset={() => applyPreset('balanced')} onOpenOptimization={() => setView('optimization')} />; break
     case 'optimization': content = <OptimizationView result={sharedResult} baseline={baseline} />; break

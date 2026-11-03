@@ -39,6 +39,8 @@ npm run dev
 
 - 거시경제, 가치평가, 수급, 위험관리, 유동성, 지정학 Agent 분석
 - Critic Agent의 출처·기준시점·점수 범위·한계 검증
+- AI-Trader의 집단지성 아이디어를 TPA에 맞게 재해석한 Agent 투자위원회
+- Agent 제안·반대 심문·Critic 판정과 합의 믹스 원클릭 적용
 - 6개 세로형 페이더, Agent 활성화/비활성화 및 자동 100% 정규화
 - 페이더·숫자 입력·± 버튼을 결합한 기관 운용 터미널형 믹싱 UI
 - 원시 가중치와 최종 정규화 반영률의 분리 표시, 실시간 결과 고정 패널
@@ -69,6 +71,10 @@ npm run dev
 
 ![AlphaMix 글로벌 리스크 지도](docs/images/global-risk-map.png)
 
+### Agent 투자위원회
+
+![AlphaMix Agent 투자위원회](docs/images/agent-committee.png)
+
 ## 검증
 
 ```powershell
@@ -80,7 +86,7 @@ npm test
 npm run build
 ```
 
-통합 MVP는 백엔드 테스트 23개와 프론트엔드 테스트 8개를 통과했습니다.
+통합 MVP는 백엔드 테스트 23개와 프론트엔드 테스트 13개를 통과했습니다.
 HTTP 스모크 테스트는 Agent 믹스 변경에 따라 최적 배분이 달라지는지,
 전 가중치 0 입력이 거부되는지, 시나리오가 SQLite에 저장되는지를 검증합니다.
 

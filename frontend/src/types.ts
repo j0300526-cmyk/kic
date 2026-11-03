@@ -7,7 +7,7 @@ export type AgentId =
   | 'geopolitical'
 
 export type AssetId = 'us_equity' | 'us_treasury' | 'gold' | 'cash'
-export type ViewId = 'overview' | 'agents' | 'riskmap' | 'mixing' | 'optimization' | 'scenarios' | 'report'
+export type ViewId = 'overview' | 'agents' | 'committee' | 'riskmap' | 'mixing' | 'optimization' | 'scenarios' | 'report'
 
 export interface AgentControl {
   id: AgentId

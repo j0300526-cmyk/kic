@@ -5,6 +5,7 @@ import {
   FileText,
   GitCompareArrows,
   Globe2,
+  MessagesSquare,
   Menu,
   SlidersVertical,
   Sparkles,
@@ -17,6 +18,7 @@ import { DataBadge } from './ui'
 const navigation: Array<{ id: ViewId; label: string; sub: string; icon: typeof CircleGauge }> = [
   { id: 'overview', label: '종합 현황', sub: '시장·포트폴리오', icon: CircleGauge },
   { id: 'agents', label: 'Agent 분석', sub: '전문가별 근거', icon: Bot },
+  { id: 'committee', label: 'Agent 위원회', sub: '토론·합의 신호', icon: MessagesSquare },
   { id: 'riskmap', label: '글로벌 리스크', sub: '분쟁·경제 뉴스', icon: Globe2 },
   { id: 'mixing', label: '믹싱 콘솔', sub: '영향력 조정', icon: SlidersVertical },
   { id: 'optimization', label: '포트폴리오 최적화', sub: 'TPA 최적화', icon: BarChart3 },
